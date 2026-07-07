@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a1228" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#6366f1" media="(prefers-color-scheme: light)">
+<title>ระบบบันทึกการขออนุญาตจอดรถค้างคืน | Seacon Bangkae</title>
+
+<!-- html2canvas + jsPDF: ใช้สำหรับ export ใบรายงานเป็นรูป/PDF ระดับ infographic ตาม pattern เดิม -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+<!-- Tailwind คอมไพล์ล่วงหน้าด้วย CLI (เฉพาะคลาสที่ใช้) ฝังไว้เพื่อให้ offline ได้และไม่มี warning -->
+<style>
+/*! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:initial}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button;background-color:initial;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:initial}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}*,::backdrop,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#3b82f680;--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: }.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-1{bottom:.25rem}.left-1{left:.25rem}.right-1{right:.25rem}.right-5{right:1.25rem}.top-0{top:0}.top-1{top:.25rem}.top-5{top:1.25rem}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mt-1{margin-top:.25rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.contents{display:contents}.hidden{display:none}.h-11{height:2.75rem}.h-6{height:1.5rem}.min-h-screen{min-height:100vh}.w-11{width:2.75rem}.w-6{width:1.5rem}.w-full{width:100%}.min-w-\[160px\]{min-width:160px}.max-w-5xl{max-width:64rem}.max-w-xs{max-width:20rem}.flex-1{flex:1 1 0%}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-7>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.75rem*var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-gold-600\/30{border-color:#b8943e4d}.border-gold-600\/40{border-color:#b8943e66}.border-navy-600{--tw-border-opacity:1;border-color:rgb(36 52 102/var(--tw-border-opacity))}.bg-black\/60{background-color:#0009}.bg-gold-500{--tw-bg-opacity:1;background-color:rgb(212 175 90/var(--tw-bg-opacity))}.bg-navy-700{--tw-bg-opacity:1;background-color:rgb(26 40 80/var(--tw-bg-opacity))}.bg-navy-800{--tw-bg-opacity:1;background-color:rgb(17 27 58/var(--tw-bg-opacity))}.bg-navy-800\/60{background-color:#111b3a99}.bg-navy-900{--tw-bg-opacity:1;background-color:rgb(10 18 40/var(--tw-bg-opacity))}.bg-navy-900\/50{background-color:#0a122880}.bg-red-600{--tw-bg-opacity:1;background-color:rgb(220 38 38/var(--tw-bg-opacity))}.bg-slate-700{--tw-bg-opacity:1;background-color:rgb(51 65 85/var(--tw-bg-opacity))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.from-emerald-600{--tw-gradient-from:#059669 var(--tw-gradient-from-position);--tw-gradient-to:#05966900 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gold-400{--tw-gradient-from:#e8c87a var(--tw-gradient-from-position);--tw-gradient-to:#e8c87a00 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gold-500{--tw-gradient-from:#d4af5a var(--tw-gradient-from-position);--tw-gradient-to:#d4af5a00 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gold-600{--tw-gradient-from:#b8943e var(--tw-gradient-from-position);--tw-gradient-to:#b8943e00 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-navy-800{--tw-gradient-from:#111b3a var(--tw-gradient-from-position);--tw-gradient-to:#111b3a00 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-navy-900{--tw-gradient-from:#0a1228 var(--tw-gradient-from-position);--tw-gradient-to:#0a122800 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-red-600{--tw-gradient-from:#dc2626 var(--tw-gradient-from-position);--tw-gradient-to:#dc262600 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.via-navy-800{--tw-gradient-to:#111b3a00 var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#111b3a var(--tw-gradient-via-position),var(--tw-gradient-to)}.to-emerald-500{--tw-gradient-to:#10b981 var(--tw-gradient-to-position)}.to-gold-500{--tw-gradient-to:#d4af5a var(--tw-gradient-to-position)}.to-gold-600{--tw-gradient-to:#b8943e var(--tw-gradient-to-position)}.to-navy-900{--tw-gradient-to:#0a1228 var(--tw-gradient-to-position)}.to-red-500{--tw-gradient-to:#ef4444 var(--tw-gradient-to-position)}.p-1{padding:.25rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\.5{padding-left:.375rem;padding-right:.375rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-0{padding-top:0;padding-bottom:0}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pt-2{padding-top:.5rem}.text-center{text-align:center}.font-sarabun{font-family:Sarabun,sans-serif}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xs{font-size:.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-wide{letter-spacing:.025em}.text-gold-400{--tw-text-opacity:1;color:rgb(232 200 122/var(--tw-text-opacity))}.text-navy-900{--tw-text-opacity:1;color:rgb(10 18 40/var(--tw-text-opacity))}.text-navy-900\/70{color:#0a1228b3}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249/var(--tw-text-opacity))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225/var(--tw-text-opacity))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184/var(--tw-text-opacity))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139/var(--tw-text-opacity))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity))}.accent-gold-500{accent-color:#d4af5a}.opacity-0{opacity:0}.shadow{--tw-shadow:0 1px 3px 0 #0000001a,0 1px 2px -1px #0000001a;--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-2xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px #00000040;--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-lg{--tw-shadow:0 10px 15px -3px #0000001a,0 4px 6px -4px #0000001a;--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid #0000;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur{--tw-backdrop-blur:blur(8px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.hover\:border-red-500:hover{--tw-border-opacity:1;border-color:rgb(239 68 68/var(--tw-border-opacity))}.hover\:bg-gold-400:hover{--tw-bg-opacity:1;background-color:rgb(232 200 122/var(--tw-bg-opacity))}.hover\:bg-navy-600:hover{--tw-bg-opacity:1;background-color:rgb(36 52 102/var(--tw-bg-opacity))}.hover\:bg-navy-700:hover{--tw-bg-opacity:1;background-color:rgb(26 40 80/var(--tw-bg-opacity))}.hover\:bg-red-900\/40:hover{background-color:#7f1d1d66}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px #0000001a,0 4px 6px -4px #0000001a;--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.hover\:shadow-gold-500\/30:hover{--tw-shadow-color:#d4af5a4d;--tw-shadow:var(--tw-shadow-colored)}.focus\:border-gold-500:focus{--tw-border-opacity:1;border-color:rgb(212 175 90/var(--tw-border-opacity))}@media (min-width:640px){.sm\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (min-width:768px){.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+
+<style>
+  /* ========== ระบบ THEME (มืด/สว่าง) ========== */
+  /* ค่าเริ่มต้น = โหมดมืด: พื้นหลังไล่สีน้ำเงินเข้มให้ดูมีมิติขึ้น */
+  body {
+    background: radial-gradient(1200px 600px at 15% -10%, #16224a 0%, transparent 55%),
+                radial-gradient(900px 500px at 110% 10%, #1d2a55 0%, transparent 50%),
+                #0a1228;
+    background-attachment: fixed;
+    transition: background .35s ease, color .35s ease;
+  }
+
+  /* ----- โหมดสว่าง: override คลาส Tailwind ที่คอมไพล์ไว้ (specificity .light .x ชนะ utility เดี่ยว) ----- */
+  html.light body {
+    background: radial-gradient(1100px 600px at 12% -10%, #e8eefb 0%, transparent 55%),
+                radial-gradient(900px 500px at 112% 8%, #fef3da 0%, transparent 50%),
+                #f4f6fb;
+    color: #1e293b;
+  }
+  /* พื้นผิว */
+  html.light .bg-navy-900 { background-color: #ffffff !important; }
+  html.light .bg-navy-800 { background-color: #f1f5f9 !important; }
+  html.light .bg-navy-700 { background-color: #e7ecf3 !important; }
+  html.light .bg-navy-900\/50 { background-color: #f8fafc !important; }
+  html.light .bg-navy-800\/60 { background-color: rgba(241,245,249,.7) !important; }
+  html.light .bg-slate-700 { background-color: #dbe2ec !important; }
+  /* เส้นขอบ */
+  html.light .border-navy-600 { border-color: #d3dbe6 !important; }
+  /* ตัวอักษร */
+  html.light .text-slate-100 { color: #1e293b !important; }
+  html.light .text-slate-300 { color: #334155 !important; }
+  html.light .text-slate-400 { color: #5b6b80 !important; }
+  html.light .text-slate-500 { color: #8a98aa !important; }
+  /* ปุ่ม hover */
+  html.light .hover\:bg-navy-700:hover { background-color: #e2e8f0 !important; }
+  html.light .hover\:bg-navy-600:hover { background-color: #d7deea !important; }
+  /* ไล่สีหัวเว็บและการ์ด (override gradient stops) */
+  html.light .from-navy-900 { --tw-gradient-from: #ffffff var(--tw-gradient-from-position) !important; --tw-gradient-to: rgba(255,255,255,0) var(--tw-gradient-to-position) !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via, ), var(--tw-gradient-to) !important; }
+  html.light .via-navy-800 { --tw-gradient-via: #f1f5f9 var(--tw-gradient-via-position) !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to) !important; }
+  html.light .to-navy-900 { --tw-gradient-to: #eef2f8 var(--tw-gradient-to-position) !important; }
+  html.light .from-navy-800 { --tw-gradient-from: #ffffff var(--tw-gradient-from-position) !important; }
+  /* เงาการ์ดให้นุ่มขึ้นในโหมดสว่าง */
+  html.light .shadow-2xl { box-shadow: 0 10px 30px rgba(30,41,59,.12) !important; }
+  html.light .photo-slot { background: #f1f5f9; border-color: #cbd5e1; }
+  html.light .photo-slot:hover { background: #eef2f8; border-color: #d4af5a; }
+  html.light ::-webkit-scrollbar-track { background: #e2e8f0; }
+  /* ไล่สีหัวเว็บ + การ์ดหลัก ในโหมดสว่าง (override ตรงเพื่อความชัวร์) */
+  html.light header.no-print { background: linear-gradient(to right, #ffffff, #f1f5f9, #eef2f8) !important; border-bottom-color: #e7c98a !important; }
+  html.light .from-navy-800.to-navy-900 { background: linear-gradient(to bottom right, #ffffff, #f3f6fb) !important; }
+
+  * { font-family: 'Sarabun', sans-serif; }
+  .font-head { font-family: 'Prompt', sans-serif; }
+
+  /* แถบ scrollbar ให้เข้าธีม */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #111b3a; }
+  ::-webkit-scrollbar-thumb { background: #b8943e; border-radius: 6px; }
+
+  /* เส้นใต้แบบฟอร์มราชการ (dotted) ให้ความรู้สึกเหมือนกรอกในเอกสารจริง */
+  .gov-input {
+    border: none; border-bottom: 1.5px dotted #94a3b8;
+    background: transparent; outline: none;
+    padding: 2px 6px; transition: all .2s;
+  }
+  .gov-input:focus { border-bottom-color: #d4af5a; background: rgba(212,175,90,.06); }
+
+  /* การ์ดอัปรูป */
+  .photo-slot {
+    aspect-ratio: 4/3; border: 2px dashed #334155; border-radius: 12px;
+    background: #0f172a; cursor: pointer; transition: all .2s; overflow: hidden;
+    position: relative;
+  }
+  .photo-slot:hover { border-color: #d4af5a; background: #131d3c; }
+  .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* แอนิเมชันแจ้งเตือน */
+  @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  .toast-in { animation: slideIn .35s cubic-bezier(.22,1,.36,1) forwards; }
+
+  /* ========== โหมด A4 (ใบรายงาน) ========== */
+  .a4-page {
+    width: 210mm; min-height: 297mm; background: #fff; color: #1e293b;
+    margin: 0 auto; padding: 16mm 18mm; box-shadow: 0 10px 40px rgba(0,0,0,.4);
+    position: relative;
+  }
+  .a4-line { border-bottom: 1px dotted #475569; min-height: 1.4em; padding: 0 4px;
+             display: inline-block; vertical-align: bottom; }
+
+  /* ===== โหมดแคปภาพ/ออก PDF: บังคับใบรายงานเป็นขนาด A4 เต็ม (เหมือนเดสก์ท็อป) =====
+     why: บนมือถือ .a4-page ถูกบีบเป็น width:100% เวลาแคปจึงได้ภาพแคบ ไม่เป็นสัดส่วน A4
+          คลาสนี้ใส่ชั่วคราวตอนแคป เพื่อให้ออกมาเหมือนเวอร์ชันคอมพิวเตอร์ทุกอุปกรณ์ */
+  #a4.exporting-a4 {
+    width: 210mm !important; min-height: 297mm !important;
+    padding: 16mm 18mm !important; box-shadow: none !important; margin: 0 !important;
+  }
+  #a4.exporting-a4 h2 { font-size: 17px !important; }
+  #a4.exporting-a4 .sign-grid { grid-template-columns: 1fr 1fr !important; gap: 30px !important; }
+
+  @media print {
+    body { background: #fff !important; }
+    .no-print { display: none !important; }
+    .a4-page { box-shadow: none; margin: 0; width: 100%; min-height: auto; padding: 12mm; }
+    @page { size: A4; margin: 0; }
+  }
+
+  .spin { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ========== RESPONSIVE / มือถือ ========== */
+  /* แท็บเล็ตลงมา: ใบรายงาน A4 ไม่ตรึงความกว้าง 210mm เพื่อไม่ให้ล้นจอ */
+  @media (max-width: 840px) {
+    #modeReport { padding-top: 12px; padding-bottom: 12px; }
+    .a4-page {
+      width: 100%; min-height: auto;
+      padding: 26px 18px; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    }
+  }
+  /* มือถือ: ปรับความหนาแน่น + กัน iOS ซูมเองเวลาแตะช่องกรอก (ต้อง >=16px) */
+  @media (max-width: 600px) {
+    input, select, textarea { font-size: 16px !important; }
+    .a4-page { padding: 20px 14px; }
+    /* ลดขนาดหัวเรื่องบนใบรายงานให้พอดีจอแคบ */
+    #a4 h2 { font-size: 15px !important; }
+    /* ปุ่ม tab ในหัวเว็บให้กระชับลง */
+    #tabForm, #tabReport { padding-left: .75rem; padding-right: .75rem; font-size: 13px; }
+    /* บล็อกลายเซ็นในใบรายงาน เรียงเป็นแนวตั้งบนจอแคบ */
+    #a4 .sign-grid { grid-template-columns: 1fr !important; gap: 22px !important; }
+  }
+  /* ป้องกันการเลื่อนแนวนอนทั้งหน้า */
+  html, body { max-width: 100%; overflow-x: hidden; }
+
+  /* ============================================================
+     🎨 VIBRANT THEME — โทนสดใส (ทำงานบนธีมสว่างซึ่งเป็นค่าเริ่มต้น)
+     หมายเหตุ: ใบรายงาน A4 (#a4) ใช้ inline style ขาว-ดำ จึงไม่โดนกระทบ
+     ============================================================ */
+  html.light body {
+    background:
+      radial-gradient(1200px 620px at 8% -12%, #dbeafe 0%, transparent 55%),
+      radial-gradient(1000px 600px at 112% -4%, #fce7f3 0%, transparent 52%),
+      radial-gradient(1000px 760px at 50% 124%, #d1fae5 0%, transparent 55%),
+      #f6f8ff;
+    color: #1e293b;
+  }
+  /* ---- หัวเว็บ (header) ไล่สี indigo→ม่วง→ชมพู ---- */
+  html.light header.no-print {
+    background: linear-gradient(120deg, #6366f1 0%, #8b5cf6 48%, #ec4899 100%) !important;
+    border-bottom: 1px solid rgba(255,255,255,.25) !important;
+  }
+  html.light header.no-print h1,
+  html.light header.no-print p { color: #fff !important; }
+  html.light header .bg-navy-700 { background: rgba(255,255,255,.18) !important; }
+  html.light header .text-slate-300 { color: #eef2ff !important; }
+  html.light header #themeToggle {
+    background: rgba(255,255,255,.20) !important; color: #fff !important;
+    border-color: rgba(255,255,255,.45) !important;
+  }
+  html.light header .from-gold-400.to-gold-600 { background: linear-gradient(135deg, #fde68a, #f59e0b) !important; }
+  /* แท็บที่ active (อยู่ในหัวเว็บ) ให้พื้นขาวตัวอักษรม่วง อ่านชัด */
+  html.light header .bg-gold-500 { background: #ffffff !important; color: #4f46e5 !important; }
+
+  /* ---- การ์ดฟอร์มหลัก ---- */
+  html.light .from-navy-800.to-navy-900 { background: linear-gradient(160deg, #ffffff, #eef2ff) !important; }
+  /* หัวการ์ดฟอร์ม (เดิมแถบทอง) → ไล่สี cyan→ฟ้า→indigo */
+  html.light .from-gold-600.to-gold-500 { background: linear-gradient(120deg, #06b6d4, #3b82f6, #6366f1) !important; }
+  html.light .from-gold-600.to-gold-500 .text-navy-900 { color: #ffffff !important; }
+  html.light .from-gold-600.to-gold-500 .text-navy-900\/70 { color: rgba(255,255,255,.9) !important; }
+
+  /* ---- หัวข้อแต่ละ section เป็นสีสด ---- */
+  html.light #modeForm section h3.text-gold-400 { color: #4f46e5 !important; }
+  /* แบดจ์ตัวเลขแต่ละ section ใช้สีต่างกันให้ดูสดใส */
+  html.light .p-6.space-y-7 > section:nth-of-type(1) h3 > span { background: linear-gradient(135deg, #6366f1, #8b5cf6) !important; color: #fff !important; }
+  html.light .p-6.space-y-7 > section:nth-of-type(2) h3 > span { background: linear-gradient(135deg, #06b6d4, #0ea5e9) !important; color: #fff !important; }
+  html.light .p-6.space-y-7 > section:nth-of-type(3) h3 > span { background: linear-gradient(135deg, #f59e0b, #f97316) !important; color: #fff !important; }
+  html.light .p-6.space-y-7 > section:nth-of-type(4) h3 > span { background: linear-gradient(135deg, #10b981, #22c55e) !important; color: #fff !important; }
+  html.light .p-6.space-y-7 > section:nth-of-type(5) h3 > span { background: linear-gradient(135deg, #ec4899, #f43f5e) !important; color: #fff !important; }
+
+  /* ---- กล่องไฮไลต์ "ประเภทรถ" ---- */
+  html.light .bg-navy-900\/50 { background: #eef2ff !important; }
+
+  /* ---- ปุ่ม "ถัดไป" หลักในฟอร์ม ไล่สีสด ---- */
+  html.light #btnNext {
+    background: linear-gradient(120deg, #6366f1, #8b5cf6, #ec4899) !important;
+    color: #ffffff !important;
+  }
+  html.light #btnNext #btnNextText { color: #ffffff !important; }
+
+  /* ---- ช่องกรอกในธีมสว่าง: ขาวสะอาด + โฟกัสเรืองสีม่วง ---- */
+  html.light .bg-navy-900 { background: #ffffff !important; }
+  html.light #modeForm input,
+  html.light #modeForm select { border-color: #cbd5e1 !important; }
+  html.light .focus\:border-gold-500:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.16);
+  }
+  /* ปุ่มรอง (ดูใบรายงาน / ล้างฟอร์ม) ในธีมสว่าง */
+  html.light #modeForm .bg-navy-700 { background: #eef2ff !important; }
+  html.light #modeForm .text-gold-400 { color: #4f46e5 !important; }
+
+  /* ===== ปุ่มดาวน์โหลดให้มีสีสัน (ใช้ได้ทั้งโหมดมืด/สว่าง) ===== */
+  .btn-grad { color: #fff !important; border: none !important; }
+  .btn-grad:hover { box-shadow: 0 8px 18px rgba(0,0,0,.22); transform: translateY(-1px); }
+  .btn-pdf { background: linear-gradient(120deg, #fb7185, #e11d48) !important; }  /* PDF: ชมพู→แดงกุหลาบ */
+  .btn-img { background: linear-gradient(120deg, #22d3ee, #6366f1) !important; }  /* รูป: ฟ้า→indigo */
+  .btn-save { background: linear-gradient(120deg, #16a34a, #059669) !important; box-shadow: 0 4px 14px rgba(5,150,105,.35); }  /* บันทึก: เขียว Google Sheets — ปุ่มหลักของหน้าตัวอย่าง */
+
+  /* ===== แก้ตัวเลือกใน dropdown ที่มองไม่เห็นในโหมดมืด =====
+     why: บางเบราว์เซอร์เรนเดอร์ <option> เป็นตัวอักษรเข้มบนพื้นเข้ม จึงกำหนดสีให้ชัดทั้งสองธีม
+          และตั้ง color-scheme เพื่อให้ native control (ปฏิทิน/เวลา/scrollbar) เข้าธีม */
+  :root { color-scheme: dark; }            /* ค่าเริ่มต้น = มืด */
+  html.light { color-scheme: light; }
+  select option, select optgroup {
+    background-color: #0f172a; color: #f1f5f9;
+  }
+  html.light select option, html.light select optgroup {
+    background-color: #ffffff; color: #1e293b;
+  }
+  /* ไอคอนปฏิทิน/นาฬิกาใน input date/time ให้เห็นชัดในโหมดมืด */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.7); cursor: pointer; }
+  html.light input[type="date"]::-webkit-calendar-picker-indicator,
+  html.light input[type="time"]::-webkit-calendar-picker-indicator { filter: none; }
+
+  /* ----- กันช่องวันที่/เวลา "ล้นขอบ" คอลัมน์ (โดยเฉพาะ iOS Safari) -----
+     why: input date/time มีความกว้างขั้นต่ำในตัว + grid/flex item ตั้ง min-width:auto
+          ทำให้ช่องไม่ยอมย่อในคอลัมน์แคบจนทะลุขอบการ์ด จึงบังคับให้ย่อได้พอดีกรอบ */
+  #modeForm input[type="date"],
+  #modeForm input[type="time"] {
+    width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box;
+  }
+  /* บนมือถือ (≤767px): รีเซ็ตสไตล์ native ที่ทำให้ช่องกว้างเกินจนล้นขอบ
+     (เดสก์ท็อปคงตัวเลือกปฏิทิน native ไว้ตามเดิม) */
+  @media (max-width: 767px) {
+    #modeForm input[type="date"],
+    #modeForm input[type="time"] {
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      text-align: left;
+    }
+  }
+  /* ให้ทุกเซลล์ใน grid และไอเท็มใน flex ของฟอร์มย่อได้ ไม่ดันจนล้น */
+  #modeForm .grid > div { min-width: 0; }
+  #modeForm .flex > input { min-width: 0; }
+
+  /* ==================================================================
+     📱 RESPONSIVE DESIGN — รองรับทุกขนาดจอ (มือถือ/แท็บเล็ต/เดสก์ท็อป)
+     ================================================================== */
+  /* ลด tap delay 300ms และตัด tap highlight ฟ้าบนมือถือ ให้กดลื่น */
+  button, a, [role="button"], label, input, select, textarea { touch-action: manipulation; }
+
+  /* ----- แท็บเล็ต & มือถือใหญ่ (380–767px): ฟิลด์สั้นใช้ 2 คอลัมน์ ลดความสูง ----- */
+  @media (min-width: 380px) and (max-width: 767px) {
+    #modeForm .grid.md\:grid-cols-3,
+    #modeForm .grid.md\:grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* ----- มือถือ (≤640px): กระชับพื้นที่ + ปุ่มเต็มความกว้าง กดง่าย ----- */
+  @media (max-width: 640px) {
+    #appHeaderBar { padding-top: .5rem; padding-bottom: .5rem; }
+    h1.font-head { font-size: 1rem; }
+    #modeForm { padding-top: 1rem; padding-bottom: 1.25rem; }
+    #modeForm .p-6 { padding: 1rem; }                 /* ลด padding การ์ดฟอร์ม */
+    /* ปุ่มหลักในฟอร์ม: เรียงตั้งเต็มความกว้าง */
+    #formActions { flex-direction: column; }
+    #formActions > button { width: 100%; min-width: 0; }
+    /* แถบปุ่มใบรายงาน: บันทึก (ปุ่มแรก) เต็มความกว้างแถวบนสุด ที่เหลือ 2 คอลัมน์ */
+    #reportToolbar { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+    #reportToolbar > button:first-child { grid-column: 1 / -1; padding-top: .85rem; padding-bottom: .85rem; }
+    #reportToolbar > button { width: 100%; min-width: 0; margin: 0; padding-left: .5rem; padding-right: .5rem; }
+    /* toast ไม่ล้นจอแคบ */
+    #toastBox { left: .75rem; right: .75rem; top: .75rem; }
+    #toastBox > div { max-width: 100%; }
+  }
+
+  /* ----- จอเล็กมาก (≤380px) ----- */
+  @media (max-width: 380px) {
+    h1.font-head { font-size: .95rem; }
+    #reportToolbar > button { font-size: .9rem; padding-left: .35rem; padding-right: .35rem; }
+  }
+
+  /* ----- กล่องเซ็นชื่อ: ไม่ให้ล้นจอเตี้ย (เช่นมือถือแนวนอน) ----- */
+  @media (max-height: 540px) {
+    #sigModal > div { max-height: 92vh; overflow-y: auto; }
+    #sigCanvas { height: 130px !important; }
+  }
+
+  /* ----- รองรับ safe-area บนเครื่องที่มีติ่ง/มุมโค้ง (iPhone ฯลฯ) ----- */
+  @supports (padding: max(0px)) {
+    #appHeaderBar {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
+  }
+
+  /* ----- เดสก์ท็อปจอกว้างมาก: ขยาย container เล็กน้อยให้ใช้พื้นที่คุ้ม ----- */
+  @media (min-width: 1280px) { .max-w-5xl { max-width: 70rem; } }
+</style>
+</head>
+
+<body class="font-sarabun text-slate-100 min-h-screen">
+
+<!-- ============ HEADER ============ -->
+<header class="no-print bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 border-b border-gold-600/40 sticky top-0 z-40 backdrop-blur">
+  <div id="appHeaderBar" class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg">
+        <svg class="w-6 h-6 text-navy-900" fill="currentColor" viewBox="0 0 24 24"><path d="M5 11l1.5-4.5h11L19 11m-1.5 5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0m-8 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-8l-2.08-5.99z"/></svg>
+      </div>
+      <div>
+        <h1 class="font-head font-bold text-lg leading-tight tracking-wide">SEACON BANGKAE</h1>
+        <p class="text-gold-400 text-xs">ระบบบันทึกการขออนุญาตจอดรถค้างคืน</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- สลับโหมด ฟอร์ม / ใบรายงาน -->
+      <div class="flex bg-navy-700 rounded-xl p-1 gap-1">
+        <button id="tabForm" onclick="switchMode('form')"
+          class="px-4 py-2 rounded-lg text-sm font-medium transition bg-gold-500 text-navy-900">
+          ✏️ กรอกฟอร์ม
+        </button>
+        <button id="tabReport" onclick="switchMode('report')"
+          class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white">
+          📄 ใบรายงาน A4
+        </button>
+      </div>
+      <!-- ปุ่มสลับธีมมืด/สว่าง -->
+      <button id="themeToggle" onclick="toggleTheme()" title="สลับโหมดมืด/สว่าง"
+        class="w-10 h-10 rounded-xl bg-navy-700 border border-gold-600/40 text-gold-400 flex items-center justify-center hover:bg-navy-600 transition text-lg">🌙</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ โหมดฟอร์ม ============ -->
+<main id="modeForm" class="max-w-5xl mx-auto px-4 py-6">
+
+  <div class="bg-gradient-to-br from-navy-800 to-navy-900 rounded-3xl border border-navy-600 shadow-2xl overflow-hidden">
+    <!-- หัวฟอร์ม -->
+    <div class="bg-gradient-to-r from-gold-600 to-gold-500 px-6 py-4">
+      <h2 class="font-head font-bold text-navy-900 text-lg">แบบฟอร์มการขออนุญาตจอดรถยนต์ / รถจักรยานยนต์</h2>
+      <p class="text-navy-900/70 text-xs">กรอกข้อมูลให้ครบถ้วน ระบบจะออกเป็นใบรายงานให้อัตโนมัติ</p>
+    </div>
+
+    <div class="p-6 space-y-7">
+
+      <!-- ส่วนที่ 1: ข้อมูลผู้ขออนุญาต -->
+      <section>
+        <h3 class="font-head text-gold-400 font-semibold mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-gold-500 text-navy-900 text-sm flex items-center justify-center font-bold">1</span> ข้อมูลผู้ขออนุญาต</h3>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div><label class="text-xs text-slate-400">วันที่ทำรายการ</label><input type="date" id="f_date" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">ชื่อ *</label><input id="f_name" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">นามสกุล *</label><input id="f_surname" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">เลขบัตรประชาชน <span class="text-[10px] text-slate-500">(ไม่บังคับ/เลขสมมติได้)</span></label><input id="f_idcard" maxlength="17" placeholder="x-xxxx-xxxxx-xx-x" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">เบอร์โทรศัพท์ *</label><input id="f_phone" maxlength="12" inputmode="numeric" placeholder="08X-XXX-XXXX" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+        </div>
+      </section>
+
+      <!-- ส่วนที่ 2: ที่อยู่ -->
+      <section>
+        <h3 class="font-head text-gold-400 font-semibold mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-gold-500 text-navy-900 text-sm flex items-center justify-center font-bold">2</span> ที่อยู่ตามทะเบียนบ้าน</h3>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div><label class="text-xs text-slate-400">บ้านเลขที่</label><input id="f_addr_no" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">หมู่</label><input id="f_moo" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">ซอย</label><input id="f_soi" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">แขวง / ตำบล</label><input id="f_subdist" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">เขต / อำเภอ</label><input id="f_dist" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">จังหวัด</label><select id="f_province" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></select></div>
+        </div>
+      </section>
+
+      <!-- ส่วนที่ 3: รายละเอียดรถ -->
+      <section>
+        <h3 class="font-head text-gold-400 font-semibold mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-gold-500 text-navy-900 text-sm flex items-center justify-center font-bold">3</span> รายละเอียดรถที่นำมาฝาก</h3>
+        <div class="bg-navy-900/50 rounded-xl p-4 mb-4">
+          <label class="text-xs text-slate-400 block mb-2">ประเภทรถ *</label>
+          <div class="flex flex-wrap gap-6 text-sm">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="vtype" value="รถยนต์" onchange="onTypeChange()" class="accent-gold-500"> รถยนต์</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="vtype" value="รถจักรยานยนต์" onchange="onTypeChange()" class="accent-gold-500"> รถจักรยานยนต์</label>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-4 gap-4">
+          <div><label class="text-xs text-slate-400">เลขทะเบียน *</label><input id="f_plate" placeholder="เช่น 1กก 1234" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div><label class="text-xs text-slate-400">จังหวัดทะเบียน</label><select id="f_plate_prov" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></select></div>
+          <div>
+            <label class="text-xs text-slate-400">ยี่ห้อ</label>
+            <select id="f_brand" onchange="onBrandChange()" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+              <option value="">-- เลือกประเภทก่อน --</option>
+            </select>
+            <input id="f_brand_other" placeholder="ระบุยี่ห้อ" class="hidden w-full mt-2 bg-navy-900 border border-gold-600/50 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">รุ่น</label>
+            <input id="f_model" placeholder="พิมพ์รุ่น เช่น City, PCX 160" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">สี</label>
+            <select id="f_color" onchange="onColorChange()" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></select>
+            <input id="f_color_other" placeholder="ระบุสี" class="hidden w-full mt-2 bg-navy-900 border border-gold-600/50 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+          </div>
+        </div>
+      </section>
+
+      <!-- ส่วนที่ 4: รายละเอียดการฝาก -->
+      <section>
+        <h3 class="font-head text-gold-400 font-semibold mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-gold-500 text-navy-900 text-sm flex items-center justify-center font-bold">4</span> รายละเอียดการฝากจอด</h3>
+        <div class="grid md:grid-cols-4 gap-4">
+          <div><label class="text-xs text-slate-400">วันที่นำรถมาฝาก</label><input type="date" id="f_park_date" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+          <div>
+            <label class="text-xs text-slate-400">เวลา <span class="text-[10px] text-slate-500">(อัตโนมัติ/แก้เองได้)</span></label>
+            <div class="flex gap-1 mt-1">
+              <input type="time" id="f_park_time" class="flex-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+              <button type="button" onclick="setParkTimeNow()" title="ใช้เวลาปัจจุบัน" class="px-2 bg-navy-700 border border-gold-600/40 text-gold-400 rounded-lg hover:bg-navy-600 transition text-sm">🕐</button>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">จุดจอดรถ (ชั้น)</label>
+            <select id="f_floor" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+              <option value="">-- เลือกชั้น --</option>
+              <option>ชั้น.B</option><option>ชั้น.B ครึ่ง</option>
+              <option>ชั้น.1</option><option>ชั้น.1 ครึ่ง</option>
+              <option>ชั้น.2</option><option>ชั้น.2 ครึ่ง</option>
+              <option>ชั้น.3</option><option>ชั้น.3 ครึ่ง</option>
+              <option>ชั้น.4</option><option>ชั้น.4 ครึ่ง</option>
+              <option>ชั้น.5</option><option>รอบอาคาร</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">จำนวน (คืน)</label>
+            <select id="f_nights" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+              <option value="1">1 คืน</option><option value="2">2 คืน</option><option value="3">3 คืน</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="text-xs text-slate-400">สาเหตุที่ฝาก (ระบุให้ชัดเจน)</label>
+          <select id="f_reason" onchange="onReasonChange()" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+            <option value="">-- เลือกสาเหตุ --</option>
+            <option>รถเสีย / เครื่องยนต์ขัดข้อง</option>
+            <option>รอช่าง / ซ่อมรถ</option>
+            <option>แบตเตอรี่หมด</option>
+            <option>ยางแบน / ยางรั่ว</option>
+            <option>น้ำมันหมด</option>
+            <option>เจ้าของไม่สบาย / เหตุฉุกเฉิน</option>
+            <option>ติดธุระส่วนตัว</option>
+            <option>ดื่มสุรา (งดขับขี่)</option>
+            <option value="__other__">อื่นๆ (ระบุเอง)</option>
+          </select>
+          <input id="f_reason_other" placeholder="ระบุสาเหตุ" class="hidden w-full mt-2 bg-navy-900 border border-gold-600/50 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+        </div>
+        <div class="mt-3 grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-slate-400">ชื่อ จนท.รปภ. ผู้รับเรื่อง</label>
+            <select id="f_guard" onchange="onGuardChange()" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+              <option value="">-- เลือกผู้รับเรื่อง --</option>
+              <option>นาย ชำนาญ พวงเขียว</option>
+              <option>นาย สาธิต ทองสีกล่ำ</option>
+              <option>นาย นเรศ สมใจ</option>
+              <option>นาย รังสี สารนิม</option>
+              <option>นาย ชัยชนะ อุดชาชน</option>
+              <option>นาย มงคล เนื่องพิมพ์</option>
+              <option>นาย บุญชัย พิลา</option>
+              <option value="อื่นๆ">อื่นๆ (ระบุเอง)</option>
+            </select>
+            <input id="f_guard_other" placeholder="ระบุชื่อผู้รับเรื่อง" class="hidden w-full mt-2 bg-navy-900 border border-gold-600/50 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none">
+          </div>
+          <div><label class="text-xs text-slate-400">หมายเหตุเพิ่มเติม</label><input id="f_note" class="w-full mt-1 bg-navy-900 border border-navy-600 rounded-lg px-3 py-2 text-sm focus:border-gold-500 outline-none"></div>
+        </div>
+      </section>
+
+      <!-- ส่วนที่ 5: แนบรูป 6 ภาพ -->
+      <section>
+        <h3 class="font-head text-gold-400 font-semibold mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-gold-500 text-navy-900 text-sm flex items-center justify-center font-bold">5</span> แนบรูปถ่ายรถ / เอกสาร (สูงสุด 6 ภาพ)</h3>
+        <p class="text-xs text-slate-400 mb-3">เลือกได้ทีละหลายรูปพร้อมกัน หรือแตะที่ช่องเพื่อถ่าย/เลือกทีละรูป — ระบบย่อขนาดอัตโนมัติก่อนส่ง</p>
+        <div class="mb-3">
+          <label class="inline-flex items-center gap-2 bg-navy-700 border border-gold-600/40 text-gold-400 px-4 py-2 rounded-xl cursor-pointer hover:bg-navy-600 transition text-sm font-medium">
+            🖼️ เลือกหลายรูปพร้อมกัน
+            <input type="file" accept="image/*" multiple class="hidden" onchange="handleMultiPhotos(event)">
+          </label>
+          <span id="photoCount" class="text-xs text-slate-400 ml-2"></span>
+        </div>
+        <div id="photoGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+      </section>
+
+      <!-- ปุ่ม -->
+      <div id="formActions" class="flex flex-wrap gap-3 pt-2">
+        <button id="btnNext" onclick="goToPreview()"
+          class="flex-1 min-w-[160px] bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 font-head font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-gold-500/30 transition flex items-center justify-center gap-2">
+          <span id="btnNextText">👁️ ถัดไป: ตรวจสอบ &amp; เซ็นชื่อ</span>
+        </button>
+        <button onclick="resetForm()"
+          class="px-6 bg-navy-700 border border-navy-600 text-slate-300 font-medium py-3 rounded-xl hover:bg-red-900/40 hover:border-red-500 transition">
+          🗑️ ล้างฟอร์ม
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ============ โหมดใบรายงาน A4 ============ -->
+<main id="modeReport" class="hidden py-6 bg-slate-700 min-h-screen">
+  <!-- แถบแจ้งหลังบันทึกสำเร็จ: กดครั้งเดียวเพื่อบันทึกรูปเข้าเครื่อง/แชร์ต่อ (ซ่อนไว้ก่อน)
+       why: iOS ไม่อนุญาตดาวน์โหลดอัตโนมัติแบบเงียบ และไฟล์ที่โหลดหาเจอยาก (ไปอยู่ในแอปไฟล์)
+            การให้ผู้ใช้กดเอง 1 ครั้ง = เกิด user gesture → เปิดแผงแชร์ระบบ → เซฟลง "รูปภาพ" ได้จริง -->
+  <div id="shareBanner" class="no-print hidden max-w-5xl mx-auto px-4 mb-3">
+    <div class="rounded-xl p-3" style="background:linear-gradient(120deg,#059669,#10b981);color:#fff">
+      <div class="flex items-center justify-between gap-2 mb-1">
+        <span class="font-head font-bold text-sm">✅ บันทึกแล้ว! ส่งต่อรูปรายงานได้เลย</span>
+        <button onclick="hideShareBanner()" aria-label="ปิด"
+          class="text-white/80 hover:text-white text-lg leading-none px-1">✕</button>
+      </div>
+      <!-- รูปพรีวิว: กดค้างเพื่อ "บันทึกลงรูปภาพ" ได้ทุกเครื่อง (แม้เบราว์เซอร์ในแอปที่บล็อกดาวน์โหลด) -->
+      <p id="shareHint" class="text-xs text-white/90 mb-2">📌 กดค้างที่รูปเพื่อ “บันทึกลงรูปภาพ” หรือกดปุ่มด้านล่าง</p>
+      <div id="shareImgWrap" class="hidden flex justify-center mb-2">
+        <img id="shareImg" alt="ใบขออนุญาตจอดรถ"
+          class="w-full max-w-[260px] rounded-lg border-2 border-white/60 shadow-lg bg-white">
+      </div>
+      <div id="shareSpin" class="text-xs text-white/90 text-center mb-2">⏳ กำลังเตรียมรูป...</div>
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <button onclick="shareReportNow()"
+          class="bg-white text-emerald-700 font-head font-bold px-5 py-2 rounded-lg hover:bg-emerald-50 transition text-sm">📲 แชร์ / ส่งต่อ</button>
+        <a id="shareDownload" href="#" download
+          class="bg-emerald-900/40 text-white font-medium px-5 py-2 rounded-lg hover:bg-emerald-900/60 transition text-sm">💾 ดาวน์โหลด</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="reportToolbar" class="no-print max-w-5xl mx-auto px-4 mb-4 flex flex-wrap gap-3 justify-center">
+    <button id="btnSaveReport" onclick="submitForm()"
+      class="btn-grad btn-save font-head font-bold px-6 py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+      <span id="btnSaveReportText">💾 บันทึกลง Google Sheets</span>
+    </button>
+    <button onclick="switchMode('form')" class="bg-navy-800 text-slate-300 border border-navy-600 font-head font-bold px-6 py-2.5 rounded-xl hover:bg-navy-700 transition">← กลับไปแก้ไข</button>
+    <button onclick="window.print()" class="bg-gold-500 text-navy-900 font-head font-bold px-6 py-2.5 rounded-xl hover:bg-gold-400 transition">🖨️ พิมพ์</button>
+    <button onclick="exportPDF()" class="btn-grad btn-pdf font-medium px-6 py-2.5 rounded-xl transition">📥 ดาวน์โหลด PDF</button>
+    <button onclick="saveReportImage()" class="btn-grad btn-img font-medium px-6 py-2.5 rounded-xl transition">🖼️ ดาวน์โหลดรูป</button>
+  </div>
+  <p class="no-print max-w-5xl mx-auto px-4 text-center text-xs text-slate-400 -mt-2 mb-4">
+    ✍️ ตรวจสอบข้อมูล เลื่อนลงไปเซ็นชื่อทั้งสองฝ่ายด้านล่าง แล้วกด "บันทึกลง Google Sheets" ด้านบนได้เลย
+  </p>
+  <div id="reportArea"></div>
+</main>
+
+<!-- ============ กล่องเซ็นลายเซ็น ============ -->
+<div id="sigModal" class="no-print hidden fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-navy-800 border border-gold-600/40 rounded-2xl w-full max-w-lg p-5 shadow-2xl">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="font-head font-semibold text-gold-400" id="sigTitle">เซ็นชื่อ</h3>
+      <button onclick="cancelSign()" class="text-slate-400 hover:text-white text-xl leading-none">✕</button>
+    </div>
+    <p class="text-xs text-slate-400 mb-2">เซ็นด้วยนิ้ว (มือถือ) หรือลากเมาส์ในกรอบด้านล่าง</p>
+    <div class="bg-white rounded-xl overflow-hidden border-2 border-navy-600">
+      <canvas id="sigCanvas" class="w-full block" style="height:200px;touch-action:none;cursor:crosshair"></canvas>
+    </div>
+    <div class="flex gap-2 mt-4">
+      <button onclick="clearSign()" class="flex-1 bg-navy-700 border border-navy-600 text-slate-300 py-2.5 rounded-xl hover:bg-navy-600 transition text-sm font-medium">🧹 ล้าง</button>
+      <button onclick="cancelSign()" class="flex-1 bg-navy-700 border border-navy-600 text-slate-300 py-2.5 rounded-xl hover:bg-red-900/40 hover:border-red-500 transition text-sm font-medium">ยกเลิก</button>
+      <button onclick="confirmSign()" class="flex-1 bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 font-bold py-2.5 rounded-xl hover:shadow-lg transition text-sm">✓ ตกลง</button>
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div id="toastBox" class="fixed top-5 right-5 z-50 space-y-2"></div>
+
+<script>
+/* =================================================================
+   ระบบบันทึกการขออนุญาตจอดรถค้างคืน — Seacon Bangkae
+   โครงสร้าง: init() → render photo slots → handleEvents → submit/report
+   ================================================================= */
+
+const PHOTO_COUNT = 6;
+let photos = new Array(PHOTO_COUNT).fill(null); // เก็บ base64 ของแต่ละช่อง
+
+// ลายเซ็น (base64 PNG พื้นโปร่งใส) — เก็บแยกตามบทบาท
+let signatures = { applicant: null, guard: null };
+
+// โลโก้ SEACON BANGKAE (ตัดขอบขาวแล้ว ฝัง base64 เพื่อให้ใบรายงานออฟไลน์ได้)
+const LOGO_DATA = 'data:image/png;base64,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';
+
+// URL Apps Script (ฝังไว้ ใช้ได้ทันที) — localStorage จะ override ถ้ามีการแก้ในอนาคต
+const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyLMHR6dUYP66Ar5OQSpNc4ZZLJT1wFsJKW34OetV6nH2F30z4B11D0CcpahkaCALgNIA/exec';
+
+// localStorage แบบปลอดภัย — Safari โหมดส่วนตัว/ปิดคุกกี้จะ throw ต้องห่อ try/catch ไม่งั้นแอปพังตั้งแต่เปิด
+function lsGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch {} }
+
+function getGasUrl() { return lsGet('sbk_gas_url') || DEFAULT_GAS_URL; }
+
+let currentDocId = '';  // เลขที่เอกสารปัจจุบัน (อัตโนมัติ)
+
+/* ---------- ธีมมืด/สว่าง ---------- */
+// ใช้คลาส .light บน <html> เป็นตัวกำหนดธีม + จำค่าไว้ใน localStorage
+function applyTheme(mode) {
+  const light = mode === 'light';
+  document.documentElement.classList.toggle('light', light);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = light ? '☀️' : '🌙';
+  lsSet('sbk_theme', mode);
+}
+function toggleTheme() {
+  const next = document.documentElement.classList.contains('light') ? 'dark' : 'light';
+  applyTheme(next);
+}
+function initTheme() {
+  // ลำดับ: ค่าที่เคยเลือก > ธีมสว่าง (สดใส) เป็นค่าเริ่มต้น
+  // why: ผู้ใช้ขอโทนสดใส จึงตั้งธีมสว่างเป็นค่าเริ่มต้น แต่ยังสลับมืดได้
+  const saved = lsGet('sbk_theme');
+  if (saved === 'light' || saved === 'dark') return applyTheme(saved);
+  applyTheme('light');
+}
+
+/* ---------- ตัวช่วยวันที่/เวลา (อิงเวลาท้องถิ่นเสมอ) ---------- */
+// why: เดิมใช้ toISOString() ซึ่งเป็นเวลา UTC ทำให้ช่วงเที่ยงคืน–ตี 7 วันที่เพี้ยนไป 1 วัน
+const pad2 = n => String(n).padStart(2, '0');
+function todayLocal() {
+  const d = new Date();
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+function nowTimeHHMM() {
+  const d = new Date();
+  return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+// ปุ่ม "ใช้เวลาปัจจุบัน" สำหรับช่องเวลาฝากจอด (อัตโนมัติ + แก้เองได้)
+function setParkTimeNow() {
+  const el = document.getElementById('f_park_time');
+  if (el) { el.value = nowTimeHHMM(); toast('ตั้งเป็นเวลาปัจจุบันแล้ว', 'ok'); }
+}
+
+// ตรวจเบอร์โทรไทย: ตัวเลขล้วน ขึ้นต้น 0 ความยาว 9–10 หลัก
+function isValidPhone(p) {
+  return /^0\d{8,9}$/.test(String(p || '').replace(/\D/g, ''));
+}
+
+// สร้างเลขที่เอกสารอัตโนมัติฝั่ง client: SBK-YYYYMMDD-HHMMSS (เวลาไทย)
+// why: ให้ใบรายงานมีเลขที่เสมอแม้ยังไม่บันทึก ส่วนตอนบันทึก server จะ assign running number ทับให้
+/* ---------- ข้อมูลตัวเลือก (Mock/Master data) ---------- */
+// 77 จังหวัดของไทย
+const PROVINCES = ['กรุงเทพมหานคร','กระบี่','กาญจนบุรี','กาฬสินธุ์','กำแพงเพชร','ขอนแก่น','จันทบุรี','ฉะเชิงเทรา','ชลบุรี','ชัยนาท','ชัยภูมิ','ชุมพร','เชียงราย','เชียงใหม่','ตรัง','ตราด','ตาก','นครนายก','นครปฐม','นครพนม','นครราชสีมา','นครศรีธรรมราช','นครสวรรค์','นนทบุรี','นราธิวาส','น่าน','บึงกาฬ','บุรีรัมย์','ปทุมธานี','ประจวบคีรีขันธ์','ปราจีนบุรี','ปัตตานี','พระนครศรีอยุธยา','พะเยา','พังงา','พัทลุง','พิจิตร','พิษณุโลก','เพชรบุรี','เพชรบูรณ์','แพร่','ภูเก็ต','มหาสารคาม','มุกดาหาร','แม่ฮ่องสอน','ยโสธร','ยะลา','ร้อยเอ็ด','ระนอง','ระยอง','ราชบุรี','ลพบุรี','ลำปาง','ลำพูน','เลย','ศรีสะเกษ','สกลนคร','สงขลา','สตูล','สมุทรปราการ','สมุทรสงคราม','สมุทรสาคร','สระแก้ว','สระบุรี','สิงห์บุรี','สุโขทัย','สุพรรณบุรี','สุราษฎร์ธานี','สุรินทร์','หนองคาย','หนองบัวลำภู','อ่างทอง','อำนาจเจริญ','อุดรธานี','อุตรดิตถ์','อุทัยธานี','อุบลราชธานี'];
+
+// สีรถมาตรฐาน
+const COLORS = ['ขาว','ขาวมุก','ดำ','เทา','เทาดำ','เงิน','บรอนซ์เงิน','บรอนซ์ทอง','น้ำเงิน','ฟ้า','แดง','เลือดหมู','น้ำตาล','ทอง','เขียว','ส้ม','เหลือง','ชมพู','ม่วง','ครีม'];
+
+// ตัวเลือกยี่ห้อ "รถยนต์" — ใช้ optgroup ตามที่กำหนด
+const CAR_BRANDS_HTML = `<option value="">-- เลือกยี่ห้อ --</option>
+  <optgroup label="🇯🇵 ญี่ปุ่น"><option>Toyota</option><option>Honda</option><option>Isuzu</option><option>Mitsubishi</option><option>Nissan</option><option>Mazda</option><option>Suzuki</option><option>Subaru</option><option>Lexus</option><option>Hino</option><option>Daihatsu</option></optgroup>
+  <optgroup label="🔋 EV / จีน"><option>BYD</option><option>MG</option><option>Neta</option><option>Deepal</option><option>GWM</option><option>GWM Haval</option><option>GWM ORA</option><option>AION</option><option>Geely</option><option>Changan</option><option>Chery</option><option>Jaecoo</option><option>Zeekr</option><option>Omoda</option><option>Riddara</option><option>Wuling</option><option>XPeng</option><option>Denza</option></optgroup>
+  <optgroup label="🇩🇪 ยุโรป"><option>Mercedes-Benz</option><option>BMW</option><option>Audi</option><option>Volkswagen</option><option>Volvo</option><option>Porsche</option><option>Mini</option><option>Peugeot</option><option>Land Rover</option><option>Jaguar</option><option>Renault</option></optgroup>
+  <optgroup label="🏎️ Luxury"><option>Ferrari</option><option>Lamborghini</option><option>Maserati</option><option>Bentley</option><option>Rolls-Royce</option><option>Aston Martin</option><option>McLaren</option><option>Lotus</option></optgroup>
+  <optgroup label="🇺🇸 อื่นๆ"><option>Ford</option><option>Tesla</option><option>Chevrolet</option><option>Jeep</option><option>Cadillac</option><option>Rivian</option><option>Hyundai</option><option>Kia</option><option>SsangYong</option></optgroup>
+  <option value="อื่นๆ">อื่นๆ</option>`;
+
+// ตัวเลือกยี่ห้อ "รถจักรยานยนต์" — จัดกลุ่มแบบเดียวกัน
+const MOTO_BRANDS_HTML = `<option value="">-- เลือกยี่ห้อ --</option>
+  <optgroup label="🇯🇵 ญี่ปุ่น"><option>Honda</option><option>Yamaha</option><option>Suzuki</option><option>Kawasaki</option></optgroup>
+  <optgroup label="🇹🇭 ไทย / อาเซียน"><option>GPX</option><option>Stallions</option><option>Tiger</option><option>Ryuka</option><option>Platinum</option></optgroup>
+  <optgroup label="🔋 EV"><option>ETRAN</option><option>H SEM</option><option>Deco</option><option>Yadea</option><option>NIU</option><option>DT Motor</option><option>Strom</option></optgroup>
+  <optgroup label="🛵 สกู๊ตเตอร์ / คลาสสิก"><option>Vespa</option><option>Piaggio</option><option>Lambretta</option><option>Scomadi</option></optgroup>
+  <optgroup label="🏍️ บิ๊กไบค์ / ยุโรป"><option>Ducati</option><option>BMW Motorrad</option><option>Triumph</option><option>KTM</option><option>Husqvarna</option><option>Aprilia</option><option>Moto Guzzi</option><option>Harley-Davidson</option><option>Indian</option><option>Royal Enfield</option><option>Benelli</option></optgroup>
+  <optgroup label="🇨🇳 จีน"><option>CFMoto</option><option>Zontes</option><option>QJMotor</option><option>Keeway</option><option>Lifan</option></optgroup>
+  <option value="อื่นๆ">อื่นๆ</option>`;
+
+const OTHER = '__other__';
+function isOtherVal(v) { return v === OTHER || v === 'อื่นๆ'; }  // รองรับทั้งสองรูปแบบ
+
+// อ่านประเภทรถจากปุ่ม radio
+function getType() {
+  const r = document.querySelector('input[name="vtype"]:checked');
+  return r ? r.value : '';
+}
+
+/* ---------- เติม option ลง select ---------- */
+function fillSelect(id, items, placeholder, withOther) {
+  const sel = document.getElementById(id);
+  let html = placeholder ? `<option value="">${placeholder}</option>` : '';
+  items.forEach(v => html += `<option value="${v}">${v}</option>`);
+  if (withOther) html += `<option value="${OTHER}">อื่นๆ (ระบุเอง)</option>`;
+  sel.innerHTML = html;
+}
+
+// ช่วยสลับช่อง "ระบุเอง" ตามค่าที่เลือก (why: รองรับยี่ห้อ/รุ่น/สีที่ไม่มีในลิสต์)
+function toggleOther(selectId, otherId) {
+  const show = isOtherVal(document.getElementById(selectId).value);
+  document.getElementById(otherId).classList.toggle('hidden', !show);
+  if (!show) document.getElementById(otherId).value = '';
+}
+
+/* ---------- เหตุการณ์ dropdown เชื่อมโยง ---------- */
+// เลือกประเภท (radio) → เติมยี่ห้อตามประเภท แล้วล้างรุ่น
+function onTypeChange() {
+  const type = getType();
+  const brandSel = document.getElementById('f_brand');
+  document.getElementById('f_brand_other').classList.add('hidden');
+  if (type === 'รถยนต์')            brandSel.innerHTML = CAR_BRANDS_HTML;
+  else if (type === 'รถจักรยานยนต์') brandSel.innerHTML = MOTO_BRANDS_HTML;
+  else                              brandSel.innerHTML = '<option value="">-- เลือกประเภทก่อน --</option>';
+}
+
+// เลือกยี่ห้อ → แค่สลับช่อง "ระบุยี่ห้อเอง" (รุ่นพิมพ์เองในช่อง input)
+function onBrandChange() {
+  toggleOther('f_brand', 'f_brand_other');
+}
+
+function onColorChange()  { toggleOther('f_color', 'f_color_other'); }
+function onReasonChange() { toggleOther('f_reason', 'f_reason_other'); }
+function onGuardChange()  { toggleOther('f_guard', 'f_guard_other'); }
+
+/* ---------- อ่านค่าจาก select ที่มี "ระบุเอง" ---------- */
+function valWithOther(selectId, otherId) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return '';
+  const v = sel.value;
+  if (!isOtherVal(v)) return v;                       // ค่าปกติ
+  const other = document.getElementById(otherId);
+  return other ? other.value.trim() : '';             // ค่าที่พิมพ์เอง (รองรับทั้ง __other__ และ 'อื่นๆ')
+}
+
+function genDocId() {
+  const now = new Date();
+  const p = n => String(n).padStart(2, '0');
+  return `SBK-${now.getFullYear()}${p(now.getMonth()+1)}${p(now.getDate())}-${p(now.getHours())}${p(now.getMinutes())}${p(now.getSeconds())}`;
+}
+
+/* ---------- INIT ---------- */
+function init() {
+  try {
+    initTheme();  // ตั้งธีมก่อนเป็นอันดับแรก
+    // ตั้งวันที่/เวลาปัจจุบันเป็นค่าเริ่มต้น (อิงเวลาท้องถิ่น) — ลดงานกรอกซ้ำ แต่ผู้ใช้แก้เองได้
+    const today = todayLocal();
+    document.getElementById('f_date').value = today;
+    document.getElementById('f_park_date').value = today;
+    document.getElementById('f_park_time').value = nowTimeHHMM();  // เวลาฝากจอดอัตโนมัติ
+
+    // สร้างเลขที่เอกสารอัตโนมัติตั้งแต่เปิดฟอร์ม
+    currentDocId = genDocId();
+
+    // เติมตัวเลือก dropdown ที่เป็น master data
+    fillSelect('f_province', PROVINCES, '-- เลือกจังหวัด --', false);
+    fillSelect('f_plate_prov', PROVINCES, '-- เลือกจังหวัด --', false);
+    fillSelect('f_color', COLORS, '-- เลือกสี --', true);
+    document.getElementById('f_province').value = 'กรุงเทพมหานคร';     // ค่าเริ่มต้นที่พบบ่อย
+    document.getElementById('f_plate_prov').value = 'กรุงเทพมหานคร';
+
+    // จัด format เลขบัตรประชาชนอัตโนมัติ x-xxxx-xxxxx-xx-x
+    document.getElementById('f_idcard').addEventListener('input', formatIdCard);
+    document.getElementById('f_phone').addEventListener('input', formatPhone);  // ใส่ขีดคั่นเบอร์โทรอัตโนมัติ
+
+    // กันการเลื่อน/ซูมหน้าจอระหว่างลากเส้นบน canvas ลายเซ็น
+    // why: บนมือถือ touch-action:none อย่างเดียวบางเบราว์เซอร์ (โดยเฉพาะ iOS) ยังเลื่อนได้
+    //      จึงดัก touch บน canvas แล้ว preventDefault แบบ non-passive (ผูกครั้งเดียว)
+    const sc = document.getElementById('sigCanvas');
+    ['touchstart', 'touchmove', 'touchend'].forEach(ev =>
+      sc.addEventListener(ev, e => { if (e.cancelable) e.preventDefault(); }, { passive: false }));
+
+    renderPhotoSlots();
+  } catch (err) {
+    console.error('init error:', err);
+    toast('เกิดข้อผิดพลาดตอนเริ่มระบบ: ' + err.message, 'err');
+  }
+}
+
+/* ---------- จัดรูปแบบเลขบัตร ---------- */
+function formatIdCard(e) {
+  let v = e.target.value.replace(/\D/g, '').slice(0, 13);
+  let out = '';
+  // รูปแบบมาตรฐานบัตรประชาชนไทย 1-4-5-2-1
+  if (v.length > 0) out = v.slice(0,1);
+  if (v.length > 1) out += '-' + v.slice(1,5);
+  if (v.length > 5) out += '-' + v.slice(5,10);
+  if (v.length > 10) out += '-' + v.slice(10,12);
+  if (v.length > 12) out += '-' + v.slice(12,13);
+  e.target.value = out;
+}
+
+/* ---------- จัดรูปแบบเบอร์โทรอัตโนมัติ (ใส่ขีดคั่น) ----------
+   - เบอร์บ้านกรุงเทพ (ขึ้นต้น 02, 9 หลัก) → 02-123-4567   (2-3-4)
+   - มือถือ (10 หลัก)                      → 08X-XXX-XXXX  (3-3-4)
+   - เบอร์บ้านต่างจังหวัด (9 หลักอื่น)      → 0XX-XXX-XXX   (3-3-3)
+   why: อ่านง่าย ตรงรูปแบบจริงของไทย และรองรับทั้งมือถือ/เบอร์บ้าน */
+function formatPhone(e) {
+  const v = e.target.value.replace(/\D/g, '').slice(0, 10);
+  let out = '';
+  if (v.startsWith('02')) {
+    // เบอร์บ้านกรุงเทพ: 2-3-4
+    if (v.length > 0) out = v.slice(0, 2);
+    if (v.length > 2) out += '-' + v.slice(2, 5);
+    if (v.length > 5) out += '-' + v.slice(5, 9);
+  } else {
+    // มือถือ 10 หลัก (3-3-4) / เบอร์บ้านต่างจังหวัด 9 หลัก (จะได้ 3-3-3)
+    if (v.length > 0) out = v.slice(0, 3);
+    if (v.length > 3) out += '-' + v.slice(3, 6);
+    if (v.length > 6) out += '-' + v.slice(6, 10);
+  }
+  e.target.value = out;
+}
+
+/* ---------- สร้างช่องอัปรูป 6 ช่อง ---------- */
+function renderPhotoSlots() {
+  const grid = document.getElementById('photoGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < PHOTO_COUNT; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot flex items-center justify-center';
+    slot.innerHTML = photos[i]
+      ? `<img src="${photos[i]}" alt="ภาพ ${i+1}">
+         <button onclick="removePhoto(event,${i})" class="absolute top-1 right-1 bg-red-600 text-white w-6 h-6 rounded-full text-xs flex items-center justify-center shadow">✕</button>
+         <span class="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">ภาพ ${i+1}</span>`
+      : `<div class="text-center text-slate-500 pointer-events-none">
+           <div class="text-3xl">📷</div>
+           <div class="text-xs mt-1">ภาพที่ ${i+1}</div>
+         </div>
+         <input type="file" accept="image/*" capture="environment" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handlePhoto(event,${i})">`;
+    grid.appendChild(slot);
+  }
+  // อัปเดตตัวนับจำนวนรูป
+  const cnt = photos.filter(p => p).length;
+  const el = document.getElementById('photoCount');
+  if (el) el.textContent = cnt ? `แนบแล้ว ${cnt}/6 ภาพ` : '';
+}
+
+/* ---------- อ่านไฟล์ + ย่อขนาด (why: ลดขนาด base64 ก่อนส่ง ป้องกัน payload ใหญ่เกิน) ---------- */
+// ย่อ+บีบอัดรูปเป็น base64 (คืน Promise) — why: ใช้ซ้ำได้ทั้งทีละรูปและหลายรูป
+function processImage(file) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith('image/')) return reject('ไม่ใช่ไฟล์รูป');
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 1280;
+        let { width:w, height:h } = img;
+        if (w > max || h > max) {
+          if (w > h) { h = h * max / w; w = max; }
+          else { w = w * max / h; h = max; }
+        }
+        const cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(cv.toDataURL('image/jpeg', 0.8)); // บีบอัด JPEG 80%
+      };
+      img.onerror = () => reject('โหลดรูปไม่สำเร็จ');
+      img.src = ev.target.result;
+    };
+    reader.onerror = () => reject('อ่านไฟล์ไม่สำเร็จ');
+    reader.readAsDataURL(file);
+  });
+}
+
+// เลือกทีละรูปลงช่องที่ระบุ
+async function handlePhoto(e, idx) {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    photos[idx] = await processImage(file);
+    renderPhotoSlots();
+    toast(`เพิ่มภาพที่ ${idx+1} แล้ว`, 'ok');
+  } catch (err) { toast('เพิ่มรูปไม่สำเร็จ: ' + err, 'err'); }
+}
+
+// เลือกหลายรูปพร้อมกัน → เติมลงช่องว่างเรียงตามลำดับ (สูงสุด 6)
+async function handleMultiPhotos(e) {
+  const files = Array.from(e.target.files);
+  e.target.value = '';                    // เคลียร์ทันที เผื่อ error จะเลือกซ้ำได้
+  if (!files.length) return;
+  let added = 0, skipped = 0, full = false;
+  for (const file of files) {
+    if (photos.indexOf(null) === -1) { full = true; break; }  // เต็ม 6 แล้ว หยุด
+    try { photos[photos.indexOf(null)] = await processImage(file); added++; }
+    catch { skipped++; }                                       // ไฟล์เสีย/ไม่ใช่รูป
+  }
+  const remaining = files.length - added - skipped;            // ที่เหลือเพราะเต็ม
+  renderPhotoSlots();
+  let msg = added ? `เพิ่ม ${added} ภาพแล้ว` : 'ไม่ได้เพิ่มรูป';
+  const extra = [];
+  if (skipped) extra.push(`ข้ามไฟล์เสีย ${skipped}`);
+  if (full && remaining > 0) extra.push(`เกิน 6 ภาพ ข้าม ${remaining}`);
+  if (extra.length) msg += ` (${extra.join(', ')})`;
+  toast(msg, added ? 'ok' : 'err');
+}
+
+function removePhoto(e, idx) {
+  e.stopPropagation();
+  photos[idx] = null;
+  renderPhotoSlots();
+}
+
+/* ---------- เก็บข้อมูลทั้งหมดจากฟอร์ม ---------- */
+function gatherData() {
+  const g = id => document.getElementById(id).value.trim();
+  return {
+    date: g('f_date'), name: g('f_name'), surname: g('f_surname'),
+    idcard: g('f_idcard'), phone: g('f_phone'),
+    addrNo: g('f_addr_no'), moo: g('f_moo'), soi: g('f_soi'),
+    subdist: g('f_subdist'), dist: g('f_dist'), province: g('f_province'),
+    vtype: getType(),
+    brand: valWithOther('f_brand', 'f_brand_other'),
+    model: document.getElementById('f_model').value.trim(),
+    color: valWithOther('f_color', 'f_color_other'),
+    plate: g('f_plate'), plateProv: g('f_plate_prov'),
+    parkDate: g('f_park_date'), parkTime: g('f_park_time'),
+    floor: g('f_floor'), nights: g('f_nights'),
+    reason: valWithOther('f_reason', 'f_reason_other'),
+    guard: valWithOther('f_guard', 'f_guard_other'), note: g('f_note'),
+    sigApplicant: signatures.applicant || '', sigGuard: signatures.guard || '',
+    photos: photos.filter(p => p) // เฉพาะภาพที่มีจริง
+  };
+}
+
+/* ---------- ตรวจ validation ขั้นต่ำ ---------- */
+function validate(d) {
+  const errs = [];
+  if (!d.name) errs.push('ชื่อ');
+  if (!d.surname) errs.push('นามสกุล');
+  if (!d.phone) errs.push('เบอร์โทรศัพท์');
+  else if (!isValidPhone(d.phone)) errs.push('เบอร์โทรศัพท์ให้ถูกต้อง (ตัวเลข 9–10 หลัก ขึ้นต้น 0)');
+  if (!d.plate) errs.push('เลขทะเบียนรถ');
+  if (!d.vtype) errs.push('ประเภทรถ');
+  // เลขบัตรประชาชน: ไม่บังคับ และไม่ตรวจ checksum — กรอกเลขสมมติ/เว้นว่างได้
+  return errs;
+}
+
+/* ---------- บันทึกลง Google Sheets ---------- */
+let isSubmitting = false;  // กันการกดบันทึกซ้ำขณะกำลังส่ง (ป้องกันข้อมูลซ้ำในชีต)
+let hasSavedOnce = false;  // เคยบันทึกรายการนี้สำเร็จแล้วหรือยัง — กันบันทึกซ้ำถ้าย้อนกลับไปแก้แล้วกดบันทึกอีก
+
+// ตรวจข้อมูลจำเป็นก่อนไปหน้าตัวอย่าง — ยังไม่ตรวจลายเซ็นตรงนี้ เพราะเซ็นได้ในหน้าถัดไปเลย
+// why: เดิมผู้ใช้กรอกฟอร์ม → กดบันทึกตรงๆ → ถ้าลืมเซ็นต้องย้อนกลับไปมาสับสน
+//      จึงรวบเป็นขั้นตอนเดียว: กรอก → ถัดไป (ตรวจฟิลด์) → หน้าตัวอย่าง (เซ็นชื่อ + กดบันทึกจบในหน้าเดียว)
+function goToPreview() {
+  const data = gatherData();
+  const errs = validate(data);
+  if (errs.length) { toast('กรุณากรอก: ' + errs.join(', '), 'err'); return; }
+  switchMode('report');  // ไปหน้าตัวอย่าง/เซ็นชื่อ — ปุ่มบันทึกอยู่ในหน้านี้แล้ว ไม่ต้องย้อนกลับฟอร์ม
+}
+
+async function submitForm() {
+  if (isSubmitting) return;  // กำลังบันทึกอยู่ ไม่รับซ้ำ
+  const data = gatherData();
+  const errs = validate(data);
+  if (errs.length) {
+    // ปกติจะไม่เกิด (ตรวจแล้วตอนกด "ถัดไป") แต่กันเคสแก้ไขจนข้อมูลขาดระหว่างอยู่หน้าตัวอย่าง
+    toast('ข้อมูลไม่ครบ: ' + errs.join(', ') + ' — พากลับไปแก้ไข', 'err');
+    switchMode('form');
+    return;
+  }
+
+  // บังคับเซ็นชื่อทั้งสองฝ่ายก่อนบันทึกเสมอ (ทำตรงนี้จุดเดียว ในหน้าตัวอย่าง)
+  // why: ป้องกันบันทึกไปแล้วไม่มีลายเซ็น ต้องย้อนกลับมาแก้ทีหลัง — เปิดกล่องเซ็นให้อัตโนมัติ
+  //      เพื่อให้ผู้ใช้เซ็นต่อได้ทันทีโดยไม่ต้องเลื่อนหาเอง ลดความสับสน
+  if (!signatures.applicant) {
+    toast('กรุณาเซ็นชื่อ "ผู้ขออนุญาต" ก่อนบันทึก', 'err');
+    openSign('applicant');
+    return;
+  }
+  if (!signatures.guard) {
+    toast('กรุณาเซ็นชื่อ "เจ้าหน้าที่ รปภ." ก่อนบันทึก', 'err');
+    openSign('guard');
+    return;
+  }
+
+  // กันบันทึกซ้ำ: ถ้ารายการนี้เคยบันทึกสำเร็จแล้ว (เช่น กด "กลับไปแก้ไข" มาแก้แล้วกดบันทึกอีก)
+  // why: backend ออกเลขที่เอกสารใหม่ทุกครั้งที่เรียก (ไม่อ้างอิง docId เดิม) การกดบันทึกซ้ำ
+  //      จะสร้างแถวใหม่ในชีตซ้ำซ้อนโดยไม่รู้ตัว จึงต้องถามยืนยันก่อนเสมอ
+  if (hasSavedOnce) {
+    const ok = confirm(
+      `รายการนี้บันทึกไปแล้ว (เลขที่ ${currentDocId})\n` +
+      `หากกดบันทึกอีกครั้ง ระบบจะสร้างรายการใหม่แยกต่างหาก (ไม่ใช่การแก้ไขของเดิม)\n\n` +
+      `ต้องการบันทึกเป็นรายการใหม่หรือไม่?`
+    );
+    if (!ok) return;
+  }
+
+  data.docId = currentDocId;            // ส่งเลขที่เอกสารอัตโนมัติไปด้วย
+  const url = getGasUrl();
+  if (!url) { toast('ยังไม่ได้ตั้งค่า URL ปลายทาง', 'err'); return; }
+
+  isSubmitting = true;
+  const btn = document.getElementById('btnSaveReport');
+  const txt = document.getElementById('btnSaveReportText');
+  if (btn) btn.disabled = true;
+  if (txt) txt.innerHTML = '<span class="spin inline-block">⏳</span> กำลังบันทึก...';
+
+  // ตั้ง timeout 30 วินาที กันค้างถ้าเครือข่ายไม่ตอบ
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 30000);
+
+  try {
+    // ใช้ text/plain เพื่อเลี่ยง CORS preflight ของ Apps Script (pattern เดิม)
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data),
+      signal: ctrl.signal
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);   // จับสถานะ 4xx/5xx
+    const text = await res.text();
+    let result;
+    try { result = JSON.parse(text); }                    // กันกรณี server คืน HTML (เช่นหน้า login/error)
+    catch { throw new Error('การตอบกลับไม่ถูกต้อง (อาจยังไม่ได้ deploy หรือสิทธิ์ไม่ถูกต้อง)'); }
+
+    if (result.status === 'success') {
+      currentDocId = result.docId || currentDocId;
+      hasSavedOnce = true;  // ทำเครื่องหมายว่ารายการนี้บันทึกสำเร็จแล้ว (กันบันทึกซ้ำครั้งถัดไป)
+      // server อาจคืน warnings (เช่น อัปโหลดรูปบางไฟล์ไม่ได้) — แจ้งให้ผู้ใช้รู้ด้วย
+      if (Array.isArray(result.warnings) && result.warnings.length) {
+        toast('บันทึกสำเร็จ! เลขที่: ' + currentDocId, 'ok');
+        toast('⚠️ ' + result.warnings.join(' / '), 'err');
+      } else {
+        toast('บันทึกสำเร็จ! เลขที่: ' + currentDocId, 'ok');
+      }
+      toast('📲 กำลังบันทึกรูปรายงานลงเครื่อง...', 'ok');
+      showReportAndAutoSave();  // ออกใบรายงาน + บันทึกรูปลงเครื่องอัตโนมัติ
+    } else {
+      throw new Error(result.message || 'ไม่ทราบสาเหตุ');
+    }
+  } catch (err) {
+    const reason = err.name === 'AbortError' ? 'หมดเวลาเชื่อมต่อ (30 วินาที)' : err.message;
+    // backend ล้มเหลว → ยังออกใบรายงานในเครื่องได้ (graceful degradation)
+    toast('บันทึกออนไลน์ไม่สำเร็จ: ' + reason + ' — ออกใบรายงานในเครื่องแทน', 'err');
+    showReportAndAutoSave();  // ยังออกใบรายงาน + บันทึกรูปลงเครื่องให้ส่งงานต่อได้
+  } finally {
+    clearTimeout(timer);
+    isSubmitting = false;
+    if (btn) btn.disabled = false;
+    if (txt) txt.innerHTML = '💾 บันทึกลง Google Sheets';
+  }
+}
+
+/* ---------- สลับโหมด ---------- */
+function switchMode(mode) {
+  const isForm = mode === 'form';
+  document.getElementById('modeForm').classList.toggle('hidden', !isForm);
+  document.getElementById('modeReport').classList.toggle('hidden', isForm);
+  document.getElementById('tabForm').className = isForm
+    ? 'px-4 py-2 rounded-lg text-sm font-medium transition bg-gold-500 text-navy-900'
+    : 'px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white';
+  document.getElementById('tabReport').className = !isForm
+    ? 'px-4 py-2 rounded-lg text-sm font-medium transition bg-gold-500 text-navy-900'
+    : 'px-4 py-2 rounded-lg text-sm font-medium transition text-slate-300 hover:text-white';
+  if (!isForm) buildReport(gatherData(), currentDocId);
+  if (isForm) hideShareBanner();  // กลับหน้าฟอร์ม → ซ่อนแถบแชร์ กันค้างข้ามรายการ
+  window.scrollTo(0, 0);
+}
+
+/* ---------- แปลง พ.ศ. และวันที่ไทย ---------- */
+function thaiDate(iso) {
+  if (!iso) return { d:'.....', m:'..............', y:'......' };
+  const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  // why: 'YYYY-MM-DD' ถ้าใช้ new Date(iso) ตรงๆ จะถูกตีความเป็น UTC ทำให้วันที่เพี้ยน
+  //      จึงแยกตัวเลขมาสร้างเป็นเวลาท้องถิ่นเอง
+  let dt;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso).trim());
+  if (m) dt = new Date(+m[1], +m[2] - 1, +m[3]);
+  else dt = new Date(iso);
+  if (isNaN(dt.getTime())) return { d:'.....', m:'..............', y:'......' };  // วันที่ผิดรูป
+  return { d: dt.getDate(), m: months[dt.getMonth()], y: (dt.getFullYear()+543) }; // +543 = แปลงเป็น พ.ศ.
+}
+
+/* ---------- สร้างใบรายงาน A4 ---------- */
+function buildReport(d, docId) {
+  const dd = thaiDate(d.date);
+  const pd = thaiDate(d.parkDate);
+  // escape อักขระพิเศษ (& < > " ') กัน HTML แตกหรือ injection เมื่อผู้ใช้พิมพ์ <, &, " ฯลฯ
+  const esc = s => String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  const L = v => (v != null && String(v).trim()) ? esc(v) : '\u00A0';  // escape + ค่าว่าง = ช่องว่าง
+
+  // กล่องรูป — ใช้ thumbnail กระชับเพื่อให้พอดี 1 หน้า
+  let photoHtml = '';
+  if (d.photos && d.photos.length) {
+    const cols = d.photos.length <= 3 ? d.photos.length : (d.photos.length <= 4 ? 4 : (d.photos.length <= 6 ? 3 : 4));
+    photoHtml = `<div style="margin-top:8px"><div style="font-weight:600;margin-bottom:4px;font-size:12px">ภาพถ่ายประกอบ (${d.photos.length} ภาพ)</div>
+      <div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:5px">` +
+      d.photos.map((p,i)=>`<div style="border:1px solid #cbd5e1;border-radius:6px;overflow:hidden;aspect-ratio:16/10"><img src="${p}" style="width:100%;height:100%;object-fit:cover"></div>`).join('') +
+      `</div></div>`;
+  }
+
+  const chk = cond => cond ? '☑' : '☐';
+
+  document.getElementById('reportArea').innerHTML = `
+  <div class="a4-page font-sarabun" id="a4">
+    <div style="position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(to right,#d4af5a,#e8c87a,#b8943e)"></div>
+    <!-- หัวกระดาษ -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #0a1228;padding-bottom:8px">
+      <div>
+        <img src="${LOGO_DATA}" alt="SEACON BANGKAE" style="height:46px;display:block">
+        <div style="font-size:11px;color:#b8943e;font-weight:600;margin-top:4px">ศูนย์การค้าซีคอนบางแค</div>
+      </div>
+      <div style="text-align:right;font-size:11px;color:#64748b">
+        <div>เลขที่เอกสาร: <b>${docId || '....................'}</b></div>
+        <div>วันที่ออก: ${new Date().toLocaleDateString('th-TH')}</div>
+      </div>
+    </div>
+
+    <h2 class="font-head" style="text-align:center;font-size:17px;font-weight:700;margin:14px 0 4px;color:#0a1228">แบบฟอร์มการขออนุญาตจอดรถยนต์ / รถจักรยานยนต์</h2>
+    <p style="text-align:center;font-size:13px;margin-bottom:14px">วันที่ <span class="a4-line" style="min-width:40px;text-align:center">${dd.d}</span> เดือน <span class="a4-line" style="min-width:110px;text-align:center">${dd.m}</span> พ.ศ. <span class="a4-line" style="min-width:60px;text-align:center">${dd.y}</span></p>
+
+    <div style="font-size:13.5px;line-height:2.1">
+      <p>ข้าพเจ้าชื่อ <span class="a4-line" style="min-width:150px">${L(d.name)}</span> สกุล <span class="a4-line" style="min-width:150px">${L(d.surname)}</span> เลขบัตร ปชช. <span class="a4-line" style="min-width:170px">${L(d.idcard)}</span></p>
+      <p>ที่อยู่เลขที่ <span class="a4-line" style="min-width:70px">${L(d.addrNo)}</span> หมู่ <span class="a4-line" style="min-width:50px">${L(d.moo)}</span> ซอย <span class="a4-line" style="min-width:90px">${L(d.soi)}</span> แขวง/ตำบล <span class="a4-line" style="min-width:110px">${L(d.subdist)}</span></p>
+      <p>เขต/อำเภอ <span class="a4-line" style="min-width:120px">${L(d.dist)}</span> จังหวัด <span class="a4-line" style="min-width:120px">${L(d.province)}</span> เบอร์โทรศัพท์ <span class="a4-line" style="min-width:130px">${L(d.phone)}</span></p>
+    </div>
+
+    <p style="font-size:13px;margin:12px 0;line-height:1.9">มีความประสงค์ขออนุญาตจอดรถค้างคืนภายในพื้นที่ศูนย์ฯ ซีคอนบางแค เป็นเวลา <b><span class="a4-line" style="min-width:40px;text-align:center">${L(d.nights)}</span></b> คืน</p>
+    <p style="font-size:11px;color:#475569;font-weight:600;text-decoration:underline;line-height:1.7">(ห้ามจอดค้างคืนเกิน 3 คืน ถ้าเกิน 3 คืน เจ้าหน้าที่ รปภ. จะทำการแจ้งเจ้าหน้าที่ตำรวจ เพื่อทำการยกรถไปไว้ที่ สน.ภาษีเจริญ เพื่อรอการแสดงหลักฐานความเป็นเจ้าของรับรถคืน)</p>
+
+    <div style="font-size:13.5px;line-height:2.1;margin-top:10px">
+      <p>โดยรถที่นำมาฝากจอด เป็น &nbsp; ${chk(d.vtype === 'รถยนต์')} รถยนต์ &nbsp;&nbsp; ${chk(d.vtype === 'รถจักรยานยนต์')} รถจักรยานยนต์</p>
+      <p>ยี่ห้อ <span class="a4-line" style="min-width:100px">${L(d.brand)}</span> รุ่น <span class="a4-line" style="min-width:100px">${L(d.model)}</span> สี <span class="a4-line" style="min-width:70px">${L(d.color)}</span> เลขทะเบียน <span class="a4-line" style="min-width:100px">${L(d.plate)}</span> จังหวัด <span class="a4-line" style="min-width:100px">${L(d.plateProv)}</span></p>
+      <p>เมื่อวันที่ <span class="a4-line" style="min-width:40px;text-align:center">${pd.d}</span> เดือน <span class="a4-line" style="min-width:100px;text-align:center">${pd.m}</span> พ.ศ. <span class="a4-line" style="min-width:55px;text-align:center">${pd.y}</span> เวลา <span class="a4-line" style="min-width:70px;text-align:center">${L(d.parkTime)}</span> น. จุดจอดรถ ชั้น <span class="a4-line" style="min-width:70px;text-align:center">${L(d.floor)}</span></p>
+      <p>สาเหตุที่ฝาก (ระบุให้ชัดเจน) <span class="a4-line" style="min-width:300px">${L(d.reason)}</span></p>
+      ${d.note ? `<p>หมายเหตุ <span class="a4-line" style="min-width:380px">${L(d.note)}</span></p>` : ''}
+    </div>
+
+    <p style="font-size:11px;font-weight:600;text-decoration:underline;text-align:center;margin:12px 0 4px;color:#0a1228">*อนึ่ง การอนุญาตให้จอดรถค้างคืน มิใช่การรับฝากรถของทางศูนย์ฯ แต่อย่างใด*</p>
+    <p style="font-size:11px;color:#475569;line-height:1.7">ฉะนั้นทางศูนย์ฯ จะไม่รับผิดชอบ ไม่ว่ากรณีใดๆ ทั้งสิ้น และโปรดกรุณานำทรัพย์สินมีค่าออกจากรถให้หมด และล็อกประตูรถให้เรียบร้อย เพื่อความปลอดภัยของทรัพย์สินท่าน</p>
+
+    ${photoHtml}
+
+    <!-- ลายเซ็น -->
+    <div class="sign-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:16px;font-size:13px;text-align:center">
+      <div>
+        <div style="height:60px;display:flex;align-items:flex-end;justify-content:center">
+          ${signatures.applicant ? `<img src="${signatures.applicant}" style="max-height:58px;max-width:90%;object-fit:contain">` : ''}
+        </div>
+        <div style="border-bottom:1px dotted #475569;margin:0 auto;width:180px"></div>
+        <button class="no-print" onclick="openSign('applicant')" style="margin-top:5px;font-size:11px;color:#b8943e;background:#fff7e6;border:1px solid #e8c87a;border-radius:6px;padding:3px 10px;cursor:pointer">✍️ ${signatures.applicant ? 'เซ็นใหม่' : 'แตะเพื่อเซ็น'}</button>
+        <div style="margin-top:4px">( <span style="display:inline-block;min-width:160px">${L(d.name)} ${L(d.surname)}</span> )</div>
+        <div style="color:#475569;margin-top:2px">ผู้ขออนุญาต / ตัวบรรจง</div>
+      </div>
+      <div>
+        <div style="height:60px;display:flex;align-items:flex-end;justify-content:center">
+          ${signatures.guard ? `<img src="${signatures.guard}" style="max-height:58px;max-width:90%;object-fit:contain">` : ''}
+        </div>
+        <div style="border-bottom:1px dotted #475569;margin:0 auto;width:180px"></div>
+        <button class="no-print" onclick="openSign('guard')" style="margin-top:5px;font-size:11px;color:#b8943e;background:#fff7e6;border:1px solid #e8c87a;border-radius:6px;padding:3px 10px;cursor:pointer">✍️ ${signatures.guard ? 'เซ็นใหม่' : 'แตะเพื่อเซ็น'}</button>
+        <div style="margin-top:4px">( <span style="display:inline-block;min-width:160px">${L(d.guard)}</span> )</div>
+        <div style="color:#475569;margin-top:2px">เจ้าหน้าที่ รปภ. / ตัวบรรจง</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Export ---------- */
+// แคปใบรายงานเป็นภาพขนาด A4 เต็ม (เหมือนเดสก์ท็อป) ไม่ว่าจะอยู่บนจอขนาดใด
+async function renderA4Canvas(el) {
+  el.classList.add('exporting-a4');     // บังคับเลย์เอาต์ A4 ชั่วคราว
+  void el.offsetWidth;                  // บังคับ reflow ให้สไตล์มีผลก่อนแคป
+  try {
+    return await html2canvas(el, {
+      scale: 2, useCORS: true, backgroundColor: '#fff',
+      // ให้ media query ในโคลนประเมินแบบเดสก์ท็อป และกว้างพอจะใส่ A4 (794px)
+      windowWidth: 1100,
+      windowHeight: Math.max(1600, el.scrollHeight + 80)
+    });
+  } finally {
+    el.classList.remove('exporting-a4'); // คืนสภาพจอเดิมเสมอ
+  }
+}
+
+async function exportPDF() {
+  const el = document.getElementById('a4');
+  if (!el) { toast('ยังไม่มีใบรายงาน', 'err'); return; }
+  if (typeof html2canvas === 'undefined' || !window.jspdf) {
+    toast('โหลดไลบรารีไม่สำเร็จ (ต้องต่ออินเทอร์เน็ตครั้งแรก)', 'err'); return;
+  }
+  toast('กำลังสร้าง PDF...', 'ok');
+  try {
+    const canvas = await renderA4Canvas(el);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageW = 210, pageH = 297;
+    const margin = 6;                       // ขอบกระดาษ (มม.)
+    const availW = pageW - margin * 2;
+    const availH = pageH - margin * 2;
+    const ratio = canvas.width / canvas.height;
+    // คำนวณให้พอดี "หน้าเดียว" เสมอ: ลองยึดความกว้างก่อน ถ้าสูงเกินค่อยยึดความสูง
+    let w = availW, h = w / ratio;
+    if (h > availH) { h = availH; w = h * ratio; }
+    const x = (pageW - w) / 2;              // จัดกึ่งกลางแนวนอน
+    const y = margin;                       // ชิดบน
+    const img = canvas.toDataURL('image/jpeg', 0.92);
+    pdf.addImage(img, 'JPEG', x, y, w, h);  // หน้าเดียวจบ
+    pdf.save(`ใบขออนุญาตจอด ${currentDocId || Date.now()}.pdf`);
+  } catch (err) {
+    console.error(err);
+    toast('สร้าง PDF ไม่สำเร็จ: ' + err.message, 'err');
+  }
+}
+
+/* ---------- บันทึก/แชร์ใบรายงานลงมือถือ (เพื่อส่งงานต่อได้ทันที) ----------
+   - มือถือที่รองรับ Web Share: เปิดแผงแชร์ให้เลือกบันทึกลงรูปภาพ/ส่ง LINE ฯลฯ
+   - ถ้าไม่รองรับ: ดาวน์โหลดไฟล์ PNG ลงเครื่องแทน
+   opts.share = true  → พยายามเปิดแผงแชร์ (ต้องมาจากการกดปุ่มของผู้ใช้)
+   opts.silent = true → ทำงานเงียบ ไม่เด้ง toast (ใช้ตอนบันทึกอัตโนมัติ) */
+async function saveReportImage(opts) {
+  opts = opts || {};
+  const el = document.getElementById('a4');
+  if (!el) { if (!opts.silent) toast('ยังไม่มีใบรายงาน', 'err'); return; }
+  if (typeof html2canvas === 'undefined') {
+    if (!opts.silent) toast('โหลดไลบรารีไม่สำเร็จ (ต้องต่อเน็ตครั้งแรก)', 'err'); return;
+  }
+  try {
+    // แคปเป็นขนาด A4 เต็มเหมือนเดสก์ท็อป, JPEG 0.9 = ไฟล์เล็ก เหมาะส่งในมือถือ (LINE/แชต)
+    const canvas = await renderA4Canvas(el);
+    const fname = `ใบขออนุญาตจอด ${currentDocId || Date.now()}.jpg`;
+    // แปลงเป็น Blob (JPEG) เพื่อใช้ได้ทั้ง Web Share และดาวน์โหลด
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.9));
+    if (!blob) throw new Error('สร้างรูปไม่สำเร็จ');
+
+    // พยายามแชร์ผ่านระบบมือถือ (ต้องมาจาก user gesture เท่านั้น)
+    if (opts.share && navigator.share && navigator.canShare) {
+      try {
+        const file = new File([blob], fname, { type: 'image/jpeg' });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: 'ใบขออนุญาตจอดรถ', text: 'ใบขออนุญาตจอดรถค้างคืน ' + (currentDocId || '') });
+          return;  // แชร์สำเร็จ
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;  // ผู้ใช้กดยกเลิกแผงแชร์ — ไม่ถือว่าผิดพลาด
+        // อื่นๆ → ตกไปดาวน์โหลดแทน
+      }
+    }
+
+    // Fallback สำหรับ iOS ที่ไม่มีแผงแชร์ (เช่น WebView บางแอป):
+    // การดาวน์โหลดตรงบน iOS มัก "หาย" ไปอยู่ในแอปไฟล์จนหาไม่เจอ
+    // จึงเปิดรูปในแท็บใหม่ให้กดค้างเพื่อ "บันทึกลงรูปภาพ" ซึ่งผู้ใช้คุ้นเคยกว่า
+    if (IS_IOS && !opts.silent) {
+      const url = URL.createObjectURL(blob);
+      const win = window.open(url, '_blank');
+      if (win) {
+        toast('เปิดรูปแล้ว — กดค้างที่รูปแล้วเลือก "บันทึกลงรูปภาพ"', 'ok');
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        return;
+      }
+      URL.revokeObjectURL(url);  // ป๊อปอัพถูกบล็อก → ตกไปดาวน์โหลดตามปกติ
+    }
+
+    // Fallback: ดาวน์โหลดไฟล์ลงเครื่อง
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.download = fname; a.href = url; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    if (!opts.silent) toast('บันทึกรูปลงเครื่องแล้ว (ดูในโฟลเดอร์ดาวน์โหลด)', 'ok');
+  } catch (err) {
+    console.error(err);
+    if (!opts.silent) toast('บันทึกรูปไม่สำเร็จ: ' + err.message, 'err');
+  }
+}
+
+// ตรวจแพลตฟอร์ม iOS (รวม iPadOS ที่ปลอมตัวเป็น Mac แต่มี touch)
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+function showShareBanner() {
+  const b = document.getElementById('shareBanner');
+  if (b) b.classList.remove('hidden');
+}
+function hideShareBanner() {
+  const b = document.getElementById('shareBanner');
+  if (b) b.classList.add('hidden');
+}
+
+/* ---------- เตรียม/แชร์/ดาวน์โหลดรูปรายงาน (เสถียรทุกเครื่อง) ----------
+   หลักการ: แคปใบรายงานเป็นรูป 1 ครั้ง แล้ว "แสดงเป็น <img> จริงในหน้า"
+   เพื่อให้ผู้ใช้กดค้างบันทึกลงอัลบั้มได้ทุกเครื่อง (iOS/Android/เบราว์เซอร์ในแอป)
+   ซึ่งชัวร์กว่าการสั่งดาวน์โหลดอัตโนมัติที่ iOS มักบล็อกหรือหาไฟล์ไม่เจอ */
+let lastReportBlob = null, lastReportUrl = null;
+
+async function prepareReportShare() {
+  const el = document.getElementById('a4');
+  const wrap = document.getElementById('shareImgWrap');
+  const spin = document.getElementById('shareSpin');
+  if (!el || typeof html2canvas === 'undefined') {
+    if (spin) spin.textContent = 'สร้างรูปไม่ได้ (ต้องต่อเน็ตครั้งแรก) — ใช้ปุ่มดาวน์โหลด PDF แทนได้';
+    return;
+  }
+  try {
+    const canvas = await renderA4Canvas(el);                      // แคปเป็นขนาด A4 เต็ม
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.9));
+    if (!blob) throw new Error('สร้างรูปไม่สำเร็จ');
+    if (lastReportUrl) URL.revokeObjectURL(lastReportUrl);        // กันหน่วยความจำรั่ว
+    lastReportBlob = blob;
+    lastReportUrl = URL.createObjectURL(blob);
+    const fname = reportFileName();
+    const img = document.getElementById('shareImg');
+    if (img) img.src = lastReportUrl;
+    const dl = document.getElementById('shareDownload');
+    if (dl) { dl.href = lastReportUrl; dl.download = fname; }
+    if (wrap) wrap.classList.remove('hidden');                    // โชว์รูปให้กดค้างบันทึก
+    if (spin) spin.classList.add('hidden');
+  } catch (err) {
+    console.error('prepareReportShare:', err);
+    if (spin) spin.textContent = 'สร้างรูปไม่สำเร็จ ลองกดปุ่ม “ดาวน์โหลดรูป” อีกครั้ง';
+  }
+}
+
+function reportFileName() { return `ใบขออนุญาตจอด ${currentDocId || Date.now()}.jpg`; }
+
+// แชร์รูปผ่านระบบมือถือ (ต้องมาจากการกดปุ่มของผู้ใช้) — ส่ง LINE/บันทึกอัลบั้มได้ทันที
+async function shareReportNow() {
+  if (!lastReportBlob) await prepareReportShare();
+  if (!lastReportBlob) { toast('ยังเตรียมรูปไม่เสร็จ ลองอีกครั้ง', 'err'); return; }
+  const fname = reportFileName();
+  try {
+    const file = new File([lastReportBlob], fname, { type: 'image/jpeg' });
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: 'ใบขออนุญาตจอดรถ', text: 'ใบขออนุญาตจอดรถค้างคืน ' + (currentDocId || '') });
+      return;  // แชร์สำเร็จ
+    }
+  } catch (e) {
+    if (e && e.name === 'AbortError') return;  // ผู้ใช้ยกเลิก — ไม่ใช่ error
+  }
+  // ไม่รองรับแชร์ไฟล์ → ดาวน์โหลด/เปิดรูปแทน
+  if (IS_IOS) {
+    const win = window.open(lastReportUrl, '_blank');
+    if (win) { toast('เปิดรูปแล้ว — กดค้างที่รูปแล้วเลือก “บันทึกลงรูปภาพ”', 'ok'); return; }
+  }
+  const a = document.createElement('a');
+  a.href = lastReportUrl; a.download = fname; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('ดาวน์โหลดรูปแล้ว หรือกดค้างที่รูปด้านบนเพื่อบันทึกลงอัลบั้ม', 'ok');
+}
+
+// แสดงใบรายงาน + เตรียมรูปให้พร้อมส่งต่อทันที (ทุกเครื่อง)
+// why: การสั่งดาวน์โหลดอัตโนมัติไม่เสถียรบนมือถือ (iOS บล็อก / หาไฟล์ไม่เจอ / เบราว์เซอร์ในแอปบล็อก)
+//      จึงเปลี่ยนเป็น "เตรียมรูปแล้วโชว์ให้กดค้างบันทึก + ปุ่มแชร์" ซึ่งได้ผลจริงทุกแพลตฟอร์ม
+function showReportAndAutoSave() {
+  switchMode('report');  // สลับไปหน้าใบรายงาน (จะ buildReport ให้เอง)
+  const spin = document.getElementById('shareSpin');
+  const wrap = document.getElementById('shareImgWrap');
+  if (spin) { spin.textContent = '⏳ กำลังเตรียมรูป...'; spin.classList.remove('hidden'); }
+  if (wrap) wrap.classList.add('hidden');
+  showShareBanner();
+  // หน่วงให้ layout/รูปในใบรายงานเรนเดอร์เสร็จก่อนแคป
+  setTimeout(() => prepareReportShare(), 450);
+}
+
+/* ---------- รีเซ็ต ---------- */
+function resetForm() {
+  if (!confirm('ล้างข้อมูลทั้งหมด?')) return;
+  document.querySelectorAll('input').forEach(i => { i.value = ''; });
+  // ซ่อนช่อง "ระบุเอง" ทั้งหมด
+  ['f_brand_other','f_color_other','f_reason_other','f_guard_other'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  // รีเซ็ตประเภท/ยี่ห้อ/รุ่น กลับสถานะเริ่มต้น
+  document.querySelectorAll('input[name="vtype"]').forEach(r => r.checked = false);
+  onTypeChange();
+  photos = new Array(PHOTO_COUNT).fill(null);
+  signatures = { applicant: null, guard: null };
+  renderPhotoSlots();
+  const today = todayLocal();
+  document.getElementById('f_date').value = today;
+  document.getElementById('f_park_date').value = today;
+  document.getElementById('f_park_time').value = nowTimeHHMM();  // เติมเวลาปัจจุบันใหม่
+  document.getElementById('f_nights').value = '1';
+  document.getElementById('f_color').value = '';
+  document.getElementById('f_reason').value = '';
+  document.getElementById('f_guard').value = '';
+  document.getElementById('f_floor').value = '';
+  document.getElementById('f_province').value = 'กรุงเทพมหานคร';
+  document.getElementById('f_plate_prov').value = 'กรุงเทพมหานคร';
+  currentDocId = genDocId();
+  hasSavedOnce = false;  // เริ่มรายการใหม่ — ปลดล็อกให้บันทึกได้ตามปกติ
+  toast('ล้างฟอร์มแล้ว', 'ok');
+}
+
+/* ---------- ลายเซ็น (Signature Pad) ---------- */
+let sigCtx = null, sigDrawing = false, sigHasInk = false, sigRole = null, sigLast = null;
+let sigScrollY = 0;  // ตำแหน่งเลื่อนหน้าก่อนเปิดกล่องเซ็น (ไว้คืนค่าตอนปิด)
+
+/* ล็อกการเลื่อนหน้าเว็บตอนเปิดกล่องเซ็น (วิธีที่ใช้ได้จริงบน iOS)
+   why: overflow:hidden อย่างเดียวไม่พอบน iOS Safari จึงตรึง body ด้วย position:fixed
+        เพื่อไม่ให้หน้าจอเลื่อน/เด้งตามนิ้วขณะเซ็น แล้วคืนตำแหน่งเดิมเมื่อปิด */
+function lockPageScroll() {
+  if (document.body.style.position === 'fixed') return;  // ล็อกอยู่แล้ว ไม่ทำซ้ำ
+  sigScrollY = window.scrollY || window.pageYOffset || 0;
+  const b = document.body;
+  b.style.position = 'fixed';
+  b.style.top = `-${sigScrollY}px`;
+  b.style.left = '0';
+  b.style.right = '0';
+  b.style.width = '100%';
+  b.style.overflow = 'hidden';
+}
+function unlockPageScroll() {
+  const b = document.body;
+  b.style.position = '';
+  b.style.top = '';
+  b.style.left = '';
+  b.style.right = '';
+  b.style.width = '';
+  b.style.overflow = '';
+  window.scrollTo(0, sigScrollY);  // คืนตำแหน่งเลื่อนเดิม
+}
+
+// เปิดกล่องเซ็นสำหรับบทบาทที่ระบุ (applicant / guard)
+function openSign(role) {
+  sigRole = role;
+  document.getElementById('sigTitle').textContent =
+    role === 'applicant' ? 'เซ็นชื่อ — ผู้ขออนุญาต' : 'เซ็นชื่อ — เจ้าหน้าที่ รปภ.';
+  const modal = document.getElementById('sigModal');
+  modal.classList.remove('hidden');
+  lockPageScroll();  // ตรึงหน้าจอไม่ให้ขยับขณะเซ็น
+
+  const cv = document.getElementById('sigCanvas');
+  // รอให้ layout คำนวณเสร็จก่อนค่อยวัดขนาด (กัน width=0 ตอน modal เพิ่งโผล่) ด้วย requestAnimationFrame
+  requestAnimationFrame(() => {
+    const rect = cv.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = rect.width || cv.clientWidth || 400;   // fallback กันค่าเป็น 0
+    const cssH = rect.height || 200;
+    cv.width = cssW * dpr;
+    cv.height = cssH * dpr;
+    sigCtx = cv.getContext('2d');
+    sigCtx.scale(dpr, dpr);
+    sigCtx.lineWidth = 2.5;
+    sigCtx.lineCap = 'round';
+    sigCtx.lineJoin = 'round';
+    sigCtx.strokeStyle = '#0a1228';
+    sigHasInk = false;
+  });
+
+  // ผูก event แบบ pointer รองรับทั้งนิ้วและเมาส์
+  cv.onpointerdown = sigStart;
+  cv.onpointermove = sigMove;
+  cv.onpointerup = sigEnd;
+  cv.onpointerleave = sigEnd;
+}
+
+function sigPos(e) {
+  const r = e.target.getBoundingClientRect();
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+function sigStart(e) {
+  if (!sigCtx) return;
+  if (e.cancelable) e.preventDefault();
+  sigDrawing = true; sigLast = sigPos(e);
+  try { e.target.setPointerCapture(e.pointerId); } catch (err) {}  // กันบางเบราว์เซอร์ throw
+}
+function sigMove(e) {
+  if (!sigDrawing || !sigCtx) return;
+  if (e.cancelable) e.preventDefault();
+  const p = sigPos(e);
+  sigCtx.beginPath();
+  sigCtx.moveTo(sigLast.x, sigLast.y);
+  sigCtx.lineTo(p.x, p.y);
+  sigCtx.stroke();
+  sigLast = p; sigHasInk = true;
+}
+function sigEnd() { sigDrawing = false; }
+
+function clearSign() {
+  if (!sigCtx) return;
+  const cv = document.getElementById('sigCanvas');
+  sigCtx.clearRect(0, 0, cv.width, cv.height);
+  sigHasInk = false;
+}
+function cancelSign() {
+  document.getElementById('sigModal').classList.add('hidden');
+  unlockPageScroll();  // คืนการเลื่อนหน้าเว็บ
+}
+
+function confirmSign() {
+  if (!sigHasInk) { toast('กรุณาเซ็นชื่อก่อน', 'err'); return; }
+  signatures[sigRole] = document.getElementById('sigCanvas').toDataURL('image/png');
+  cancelSign();
+  buildReport(gatherData(), currentDocId); // วาดใบรายงานใหม่ให้ลายเซ็นปรากฏ
+  toast('บันทึกลายเซ็นแล้ว', 'ok');
+}
+
+/* ---------- Toast แจ้งเตือน ---------- */
+function toast(msg, type) {
+  const box = document.getElementById('toastBox');
+  const el = document.createElement('div');
+  const color = type === 'ok' ? 'from-emerald-600 to-emerald-500' : 'from-red-600 to-red-500';
+  el.className = `toast-in bg-gradient-to-r ${color} text-white px-4 py-3 rounded-xl shadow-2xl text-sm font-medium max-w-xs`;
+  el.textContent = msg;
+  box.appendChild(el);
+  setTimeout(() => { el.style.transition = 'opacity .3s'; el.style.opacity = '0'; setTimeout(()=>el.remove(), 300); }, 3500);
+}
+
+
+/* ---------- ย่อใบรายงานให้พอดี 1 หน้า A4 ตอนสั่งพิมพ์ ----------
+   why: ผู้ใช้ต้องการให้ออกรายงานเป็นหน้าเดียวเสมอ ไม่ว่าจะมีรูป/ลายเซ็นมากแค่ไหน
+   วิธี: วัดความสูงจริงของใบรายงาน ถ้าเกินความสูงหน้า A4 ให้ย่อด้วย transform scale */
+function applyPrintFit() {
+  const el = document.getElementById('a4');
+  if (!el) return;
+  el.style.transform = 'none';            // รีเซ็ตก่อนวัด
+  const mmToPx = 96 / 25.4;
+  const pagePadding = 12;                 // ตรงกับ padding ใน @media print (มม.)
+  const availH = (297 - pagePadding * 2) * mmToPx;
+  const naturalH = el.scrollHeight;
+  if (naturalH > availH) {
+    const scale = Math.max(availH / naturalH, 0.5);  // ไม่ย่อเล็กกว่า 50% เพื่อคงความอ่านออก
+    el.style.transformOrigin = 'top left';
+    el.style.transform = `scale(${scale})`;
+  }
+}
+function clearPrintFit() {
+  const el = document.getElementById('a4');
+  if (el) el.style.transform = 'none';
+}
+window.addEventListener('beforeprint', applyPrintFit);
+window.addEventListener('afterprint', clearPrintFit);
+
+/* ---------- Global Error Handler ----------
+   why: ดักจับข้อผิดพลาดที่ไม่ถูก try/catch (uncaught error / promise ที่ reject ทิ้ง)
+        เพื่อแจ้งผู้ใช้แทนที่จะพังเงียบ และไม่ให้ error เดียวทำทั้งแอปค้าง */
+let lastGlobalErrAt = 0;
+function reportGlobalError(msg) {
+  const now = Date.now();
+  if (now - lastGlobalErrAt < 1500) return;  // กัน toast ถล่มถ้า error รัวๆ
+  lastGlobalErrAt = now;
+  try { toast('เกิดข้อผิดพลาดที่ไม่คาดคิด: ' + msg, 'err'); } catch (e) {}
+}
+window.addEventListener('error', ev => {
+  console.error('Uncaught error:', ev.error || ev.message);
+  reportGlobalError((ev.error && ev.error.message) || ev.message || 'ไม่ทราบสาเหตุ');
+});
+window.addEventListener('unhandledrejection', ev => {
+  console.error('Unhandled promise rejection:', ev.reason);
+  const m = ev.reason && ev.reason.message ? ev.reason.message : String(ev.reason || 'ไม่ทราบสาเหตุ');
+  reportGlobalError(m);
+});
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
